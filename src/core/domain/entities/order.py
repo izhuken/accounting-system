@@ -1,10 +1,10 @@
 from datetime import datetime
 
-from core.domain.entities.stock import Warehouse
 from core.domain.value_objects.order import OrderId, OrderStatus
 
 from .client import Client
 from .contractor import Contractor
+from .warehouse import Warehouse
 
 
 class Order:

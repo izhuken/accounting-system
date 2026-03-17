@@ -1,1 +1,1 @@
-from .stock import Stock  # noqa: F401
+from .warehouse import Warehouse  # noqa: F401

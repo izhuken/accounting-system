@@ -12,7 +12,7 @@ class Warehouse:
         self,
         id: WarehouseId,
         name: WarehouseName,
-        address: WarehouseAddress = None,
+        address: WarehouseAddress,
         created_ad: datetime = datetime.now(),
         updated_at: datetime = datetime.now(),
     ) -> None:

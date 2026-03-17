@@ -5,9 +5,9 @@ from core.domain.value_objects.common import UUIDValueObjectId
 
 
 @dataclass(frozen=True)
-class StockId(UUIDValueObjectId):
+class WarehouseId(UUIDValueObjectId):
     value: UUID
 
     @staticmethod
-    def generate() -> StockId:
-        return StockId(uuid4())
+    def generate() -> WarehouseId:
+        return WarehouseId(uuid4())

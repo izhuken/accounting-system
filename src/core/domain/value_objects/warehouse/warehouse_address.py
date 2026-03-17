@@ -2,7 +2,7 @@ from dataclasses import dataclass
 
 
 @dataclass(frozen=True)
-class StockAddress:
+class WarehouseAddress:
     city: str
     street: str
     house: str

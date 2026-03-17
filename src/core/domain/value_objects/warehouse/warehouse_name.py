@@ -4,7 +4,7 @@ from core.domain.value_objects.common import ValueObject
 
 
 @dataclass(frozen=True)
-class StockName(ValueObject):
+class WarehouseName(ValueObject):
     value: str
 
     def __post_init__(self) -> None:
@@ -14,7 +14,7 @@ class StockName(ValueObject):
         return self.value
 
     def __eq__(self, obj: object) -> bool:
-        if isinstance(obj, StockName):
+        if isinstance(obj, WarehouseName):
             return self.value == obj.value
 
         return False
