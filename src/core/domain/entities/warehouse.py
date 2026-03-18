@@ -1,5 +1,6 @@
 from datetime import datetime
 
+from core.domain.entities.entity import Entity
 from core.domain.value_objects.warehouse import (
     WarehouseAddress,
     WarehouseId,
@@ -7,19 +8,19 @@ from core.domain.value_objects.warehouse import (
 )
 
 
-class Warehouse:
+class Warehouse(Entity):
     def __init__(
         self,
         id: WarehouseId,
         name: WarehouseName,
         address: WarehouseAddress,
-        created_ad: datetime = datetime.now(),
+        created_at: datetime = datetime.now(),
         updated_at: datetime = datetime.now(),
     ) -> None:
         self._id = id
         self._name = name
         self._address = address
-        self._created_ad = created_ad
+        self._created_at = created_at
         self._updated_at = updated_at
 
     def __eq__(self, obj: object) -> bool:
@@ -42,7 +43,7 @@ class Warehouse:
 
     @property
     def created_at(self) -> datetime:
-        return self._created_ad
+        return self._created_at
 
     @property
     def updated_at(self) -> datetime:

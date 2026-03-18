@@ -1,5 +1,6 @@
 from datetime import datetime
 
+from core.domain.entities.entity import Entity
 from core.domain.value_objects.order import OrderId, OrderStatus
 
 from .client import Client
@@ -7,7 +8,7 @@ from .contractor import Contractor
 from .warehouse import Warehouse
 
 
-class Order:
+class Order(Entity):
     def __init__(
         self,
         id: OrderId,
@@ -16,7 +17,7 @@ class Order:
         contractor: Contractor,
         base_warehouse: Warehouse,
         contractor_warehouse: Warehouse,
-        created_ad: datetime = datetime.now(),
+        created_at: datetime = datetime.now(),
         updated_at: datetime = datetime.now(),
     ) -> None:
         self._id = id
@@ -25,7 +26,7 @@ class Order:
         self._contractor = contractor
         self._base_warehouse = base_warehouse
         self._contractor_warehouse = contractor_warehouse
-        self._created_ad = created_ad
+        self._created_at = created_at
         self._updated_at = updated_at
 
     def __eq__(self, obj: object) -> bool:
@@ -60,7 +61,7 @@ class Order:
 
     @property
     def created_at(self) -> datetime:
-        return self._created_ad
+        return self._created_at
 
     @property
     def updated_at(self) -> datetime:

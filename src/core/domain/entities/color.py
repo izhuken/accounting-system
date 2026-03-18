@@ -1,34 +1,35 @@
 from datetime import datetime
 
 from core.domain.entities.entity import Entity
-from core.domain.value_objects.metric import MetricCode, MetricName
+from core.domain.value_objects.color.color_id import ColorId
+from core.domain.value_objects.color.color_name import ColorName
 
 
-class Metric(Entity):
+class Color(Entity):
     def __init__(
         self,
-        code: MetricCode,
-        name: MetricName,
+        id: ColorId,
+        name: ColorName,
         created_at: datetime = datetime.now(),
         updated_at: datetime = datetime.now(),
     ) -> None:
-        self._code = code
+        self._id = id
         self._name = name
         self._created_at = created_at
         self._updated_at = updated_at
 
     def __eq__(self, obj: object) -> bool:
-        if not isinstance(obj, Metric):
-            return False
+        if isinstance(obj, Color):
+            return self.id == obj.id
 
-        return self.id == obj.id
-
-    @property
-    def code(self) -> MetricCode:
-        return self._code
+        return False
 
     @property
-    def name(self) -> MetricName:
+    def id(self) -> ColorId:
+        return self._id
+
+    @property
+    def name(self) -> ColorName:
         return self._name
 
     @property
@@ -39,10 +40,13 @@ class Metric(Entity):
     def updated_at(self) -> datetime:
         return self._updated_at
 
-    def update_name(self, name: MetricName) -> None:
+    def update_name(self, name: ColorName) -> None:
         self._name = name
         self._updated_at = datetime.now()
 
     @staticmethod
-    def create(code: MetricCode, name: MetricName) -> Metric:
-        return Metric(code=code, name=name)
+    def create(name: ColorName) -> Color:
+        return Color(
+            id=ColorId.generate(),
+            name=name,
+        )

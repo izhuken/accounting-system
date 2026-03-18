@@ -1,5 +1,6 @@
 from datetime import datetime
 
+from core.domain.entities.entity import Entity
 from core.domain.value_objects.client import (
     ClientAddress,
     ClientEmail,
@@ -9,7 +10,7 @@ from core.domain.value_objects.client import (
 )
 
 
-class Client:
+class Client(Entity):
     def __init__(
         self,
         id: ClientId,
@@ -17,7 +18,7 @@ class Client:
         phone: ClientPhone,
         email: ClientEmail,
         address: ClientAddress,
-        created_ad: datetime = datetime.now(),
+        created_at: datetime = datetime.now(),
         updated_at: datetime = datetime.now(),
     ):
         self._id = id
@@ -25,7 +26,7 @@ class Client:
         self._phone = phone
         self._email = email
         self._address = address
-        self._created_ad = created_ad
+        self._created_at = created_at
         self._updated_at = updated_at
 
     @property
@@ -47,7 +48,7 @@ class Client:
 
     @property
     def created_at(self) -> datetime:
-        return self._created_ad
+        return self._created_at
 
     @property
     def updated_at(self) -> datetime:

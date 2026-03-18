@@ -4,6 +4,14 @@ from uuid import UUID, uuid4
 from sqlalchemy import DateTime, String, func
 from sqlalchemy.orm import Mapped, mapped_column
 
+from core.domain.entities.contractor import Contractor
+from core.domain.value_objects.contractor import (
+    ContractorAddress,
+    ContractorEmail,
+    ContractorId,
+    ContractorName,
+    ContractorPhone,
+)
 from core.infrastructure.sqlite.database import Base
 
 
@@ -27,3 +35,34 @@ class ContractorModel(Base):
     updated_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True), server_default=func.now(), onupdate=func.now()
     )
+
+    def to_entity(self) -> Contractor:
+        return Contractor(
+            id=ContractorId(self.id),
+            name=ContractorName(self.name),
+            phone=ContractorPhone(self.phone),
+            email=ContractorEmail(self.email),
+            address=ContractorAddress(
+                city=self.city,
+                street=self.street,
+                house=self.house,
+                building=self.building,
+            ),
+            created_at=self.created_at,
+            updated_at=self.updated_at,
+        )
+
+    @staticmethod
+    def from_entity(entity: Contractor) -> ContractorModel:
+        return ContractorModel(
+            id=entity.id.value,
+            name=entity.name.value,
+            phone=entity.phone.value,
+            email=entity.email.value,
+            city=entity.address.city,
+            street=entity.address.street,
+            house=entity.address.house,
+            building=entity.address.building,
+            created_at=entity.created_at,
+            updated_at=entity.updated_at,
+        )

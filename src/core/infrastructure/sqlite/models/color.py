@@ -1,9 +1,11 @@
 from datetime import datetime
 from uuid import UUID, uuid4
 
+from domain.entities.color import Color
 from sqlalchemy import DateTime, String, func
 from sqlalchemy.orm import Mapped, mapped_column
 
+from core.domain.value_objects.color import ColorId, ColorName
 from core.infrastructure.sqlite.database import Base
 
 
@@ -19,3 +21,10 @@ class ColorModel(Base):
     updated_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True), server_default=func.now(), onupdate=func.now()
     )
+
+    def to_entity(self) -> Color:
+        return Color(id=ColorId(self.id), name=ColorName(self.name))
+
+    @staticmethod
+    def from_entity(entity: Color) -> ColorModel:
+        return ColorModel(id=entity.id.value, name=entity.name.value)

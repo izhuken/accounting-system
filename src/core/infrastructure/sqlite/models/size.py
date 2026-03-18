@@ -1,17 +1,20 @@
 from datetime import datetime
-from uuid import UUID, uuid4
 
 from sqlalchemy import DateTime, String, func
 from sqlalchemy.orm import Mapped, mapped_column
 
+from core.domain.entities.size import Size
+from core.domain.value_objects.size.size_code import SizeCode
+from core.domain.value_objects.size.size_height import SizeHeight
 from core.infrastructure.sqlite.database import Base
 
 
 class SizeModel(Base):
     __tablename__ = "sizes"
 
-    id: Mapped[UUID] = mapped_column(primary_key=True, default=uuid4, unique=True)
-    code: Mapped[str] = mapped_column(String(32), nullable=False, unique=True)
+    code: Mapped[str] = mapped_column(
+        String(32), nullable=False, unique=True, primary_key=True
+    )
     height: Mapped[str] = mapped_column(String(32), nullable=False)
 
     created_at: Mapped[datetime] = mapped_column(
@@ -20,3 +23,20 @@ class SizeModel(Base):
     updated_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True), server_default=func.now(), onupdate=func.now()
     )
+
+    def to_entity(self) -> Size:
+        return Size(
+            id=SizeCode(self.code),
+            height=SizeHeight(self.height),
+            created_at=self.created_at,
+            updated_at=self.updated_at,
+        )
+
+    @staticmethod
+    def from_entity(entity: Size) -> SizeModel:
+        return SizeModel(
+            code=entity.id.value,
+            height=entity.height.value,
+            created_at=entity.created_at,
+            updated_at=entity.updated_at,
+        )
