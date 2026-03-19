@@ -7,5 +7,6 @@ requires-python = ">=3.14"
 dependencies = [
     "aiosqlite>=0.22.1",
     "alembic>=1.18.4",
+    "flet[cli,desktop]>=0.82.2",
     "sqlalchemy>=2.0.48",
 ]
