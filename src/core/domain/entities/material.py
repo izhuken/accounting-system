@@ -2,7 +2,7 @@ from datetime import datetime
 
 from core.domain.entities.entity import Entity
 from core.domain.entities.metric_code import Metric
-from core.domain.value_objects import MaterialId, MaterialName
+from core.domain.value_objects.material import MaterialId, MaterialName
 
 
 class Material(Entity):

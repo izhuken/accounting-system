@@ -13,8 +13,10 @@ class ProductReceiptModel(Base):
     id: Mapped[UUID] = mapped_column(primary_key=True, unique=True, default=uuid4)
     quantity: Mapped[float] = mapped_column(nullable=False, default=0.0)
 
-    product_id: Mapped[UUID] = mapped_column(ForeignKey("product.id"), nullable=False)
-    material_id: Mapped[UUID] = mapped_column(ForeignKey("material.id"), nullable=False)
+    product_id: Mapped[UUID] = mapped_column(ForeignKey("products.id"), nullable=False)
+    material_id: Mapped[UUID] = mapped_column(
+        ForeignKey("materials.id"), nullable=False
+    )
 
     created_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True), server_default=func.now()

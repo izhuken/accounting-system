@@ -13,8 +13,10 @@ class InvoiceMaterialModel(Base):
     id: Mapped[UUID] = mapped_column(primary_key=True, default=uuid4, unique=True)
     quantity: Mapped[float] = mapped_column(nullable=False, default=0.0)
 
-    material_id: Mapped[UUID] = mapped_column(ForeignKey("material.id"), nullable=False)
-    invoice_id: Mapped[int] = mapped_column(ForeignKey("order.id"), nullable=False)
+    material_id: Mapped[UUID] = mapped_column(
+        ForeignKey("materials.id"), nullable=False
+    )
+    invoice_id: Mapped[int] = mapped_column(ForeignKey("invoices.id"), nullable=False)
 
     created_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True), server_default=func.now()

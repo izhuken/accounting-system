@@ -1,20 +1,24 @@
 from datetime import datetime
 from uuid import UUID, uuid4
 
-from sqlalchemy import DateTime, ForeignKey, func
+from sqlalchemy import DateTime, Enum, func
 from sqlalchemy.orm import Mapped, mapped_column
 
+from core.domain.value_objects.user import UserStatus
 from core.infrastructure.sqlite.database import Base
+from core.infrastructure.sqlite.fields.encrypted_string import EncryptedString
 
 
-class OrderProductModel(Base):
-    __tablename__ = "order_products"
+class UserModel(Base):
+    __tablename__ = "user"
 
     id: Mapped[UUID] = mapped_column(primary_key=True, default=uuid4, unique=True)
-    quantity: Mapped[float] = mapped_column(nullable=False, default=0.0)
 
-    product_id: Mapped[UUID] = mapped_column(ForeignKey("products.id"), nullable=False)
-    order_id: Mapped[int] = mapped_column(ForeignKey("orders.id"), nullable=False)
+    username: Mapped[str] = mapped_column(EncryptedString, nullable=False, unique=True)
+    password: Mapped[str] = mapped_column(nullable=False)
+    status: Mapped[UserStatus] = mapped_column(
+        Enum(UserStatus), nullable=False, default=UserStatus.INACTIVE
+    )
 
     created_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True), server_default=func.now()

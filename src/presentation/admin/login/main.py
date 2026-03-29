@@ -16,6 +16,7 @@ from shared.components import CommonButton
 class LoginPage(Container):
     def __init__(self, router: Router):
         self.router = router
+        # self._service = UserService()
         self.password_field_ref = Ref[TextField]()
 
         super().__init__(
@@ -51,5 +52,5 @@ class LoginPage(Container):
             expand=True,
         )
 
-    async def authenticate(self):
+    def authenticate(self):
         pass

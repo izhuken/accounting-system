@@ -12,7 +12,12 @@ class InvoiceSnapshotModel(Base):
 
     snapshot: Mapped[list[Any]] = mapped_column(default=[], nullable=False)
 
-    invoice_id: Mapped[int] = mapped_column(ForeignKey("order.id"), nullable=False)
+    invoice_id: Mapped[int] = mapped_column(
+        ForeignKey("invoices.id"),
+        nullable=False,
+        primary_key=True,
+        unique=True,
+    )
 
     created_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True), server_default=func.now()
