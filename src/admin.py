@@ -1,28 +1,41 @@
-from warnings import filterwarnings
-
-from flet import Page, run
+from PySide6.QtGui import QColor, QPalette
+from PySide6.QtWidgets import QApplication, QMainWindow, QStackedWidget
 
 from core.service.router import Router
-from presentation.admin import LoginPage
+from presentation.admin import InitPage
 from shared.colors import Colors
 
 
-async def main(page: Page):
-    filterwarnings("ignore", category=DeprecationWarning)
+class MainWindow(QMainWindow):
+    def __init__(self):
+        super().__init__()
+        self.setWindowTitle("Учет материалов")
 
-    app_router = Router()
+        self.showMaximized()
 
-    page.title = "Учет материалов"
-    page.padding = 0
-    page.expand = 1
-    page.bgcolor = Colors.BACKGROUND
+        stack = QStackedWidget()
+        router = Router(stack)
 
-    app_router.set_routes({"/login": LoginPage})
+        init_page = InitPage()
+        router.register_screen("init", init_page)
 
-    app_router.page = page
-    page.on_route_change = app_router.route_change
-    page.add(app_router.body)
-    app_router.go("/login")
+        self.setCentralWidget(stack)
 
 
-run(main, name="Учет материалов", assets_dir="assets")
+def main():
+    app = QApplication()
+
+    app.setStyle("Fusion")
+    palette = QPalette()
+    palette.setColor(QPalette.ColorRole.Window, QColor(Colors.BACKGROUND.value))
+    palette.setColor(QPalette.ColorRole.Base, QColor(Colors.BACKGROUND.value))
+    app.setPalette(palette)
+
+    window = MainWindow()
+    window.show()
+
+    app.exec()
+
+
+if __name__ == "__main__":
+    main()

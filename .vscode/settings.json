@@ -13,5 +13,6 @@
     "comments": false,
     "strings": false
   },
-  "editor.suggest.snippetsPreventQuickSuggestions": false
+  "editor.suggest.snippetsPreventQuickSuggestions": false,
+  "pylint.args": ["--extension-pkg-whitelist=PySide6"]
 }

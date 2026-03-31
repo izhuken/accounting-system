@@ -7,6 +7,9 @@ requires-python = ">=3.14"
 dependencies = [
     "alembic>=1.18.4",
     "cryptography>=46.0.6",
-    "flet[cli,desktop]>=0.82.2",
+    "pyside6>=6.11.0",
     "sqlalchemy>=2.0.48",
 ]
+
+[dependency-groups]
+dev = []
