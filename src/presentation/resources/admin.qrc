@@ -1,0 +1,7 @@
+<RCC>
+    <qresource prefix="/">
+        <file>icons/toast_error.svg</file>
+        <file>icons/toast_info.svg</file>
+        <file>icons/toast_success.svg</file>
+    </qresource>
+</RCC>

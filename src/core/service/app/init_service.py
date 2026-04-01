@@ -2,10 +2,10 @@ from pathlib import Path
 
 from alembic import command
 from alembic.config import Config as AlembicConfig
-from alembic.util import CommandError
+from alembic.util.exc import CommandError
 
 from core.config import Config
-from core.service.exceptions.initial_error import InitialError
+from core.service.exceptions import InitialError
 
 
 class InitDBService:
@@ -22,7 +22,18 @@ class InitDBService:
 
     def __migrate_db(self):
         try:
-            alembic_cfg = AlembicConfig("assets/db/alembic.ini")
-            command.upgrade(alembic_cfg, "head")
+            alembic_config = AlembicConfig()
+            alembic_config.set_main_option(
+                "script_location",
+                str(
+                    Path(__file__).parent.parent.parent.parent
+                    / "core"
+                    / "infrastructure"
+                    / "sqlite"
+                    / "migrations"
+                ),
+            )
+            alembic_config.set_main_option("sqlalchemy.url", Config.db_url)
+            command.upgrade(alembic_config, "head")
         except CommandError:
             raise InitialError

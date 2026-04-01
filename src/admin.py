@@ -1,9 +1,10 @@
 from PySide6.QtGui import QColor, QPalette
 from PySide6.QtWidgets import QApplication, QMainWindow, QStackedWidget
 
-from core.service.router import Router
+import presentation.resources.admin_rc  # noqa:F401
 from presentation.admin import InitPage
 from shared.colors import Colors
+from shared.lib.router import Router
 
 
 class MainWindow(QMainWindow):

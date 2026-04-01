@@ -6,11 +6,9 @@ from appdirs import user_data_dir
 
 @dataclass
 class _ApplicationConfig:
+    app_name: str = field(default="as-admin")
     secret_key: str = field(default=b"CPmZz-zW8vxIJEAAW7swJTJT_Hjjwt25KjOvCU2fCcw=")
-    is_dev_mode: bool = field(default=False)
-
     data_dir: str = field(default=path.join(user_data_dir(), "as-admin"))
-
     db_url: str = field(default="")
     db_path: str = field(default="")
 

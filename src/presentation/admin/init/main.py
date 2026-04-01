@@ -1,7 +1,7 @@
-from PySide6.QtCore import Qt, Signal
+from PySide6.QtCore import Qt, QThread, Signal
 from PySide6.QtWidgets import QLabel, QProgressBar, QVBoxLayout, QWidget
 
-from core.config.app import Config
+from core.service.command import InitThreadCommand
 from shared.colors import Colors
 
 # from shared.lib import Toaster
@@ -55,7 +55,14 @@ class InitPage(QWidget):
         self.init_db()
 
     def init_db(self) -> None:
-        print(
-            Config.db_url,
-            Config.db_path,
-        )
+        self.thread = QThread()
+        self.worker = InitThreadCommand()
+
+        self.worker.moveToThread(self.thread)
+
+        self.thread.started.connect(self.worker.execute)
+        self.worker.finished.connect(self.thread.quit)
+        self.worker.finished.connect(self.worker.deleteLater)
+        self.thread.finished.connect(self.thread.deleteLater)
+
+        self.thread.start()
