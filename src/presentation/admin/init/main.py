@@ -1,8 +1,10 @@
 from PySide6.QtCore import Qt, Signal
 from PySide6.QtWidgets import QLabel, QProgressBar, QVBoxLayout, QWidget
 
+from core.config.app import Config
 from shared.colors import Colors
-from shared.lib import Toaster
+
+# from shared.lib import Toaster
 
 
 class InitPage(QWidget):
@@ -50,6 +52,10 @@ class InitPage(QWidget):
         layout.addWidget(progress_bar, alignment=Qt.AlignCenter)
         self.setLayout(layout)
 
-    def init_db(self):
-        toaster = Toaster("someone")
-        toaster.show_toast()
+        self.init_db()
+
+    def init_db(self) -> None:
+        print(
+            Config.db_url,
+            Config.db_path,
+        )

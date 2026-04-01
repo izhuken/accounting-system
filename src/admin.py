@@ -11,8 +11,6 @@ class MainWindow(QMainWindow):
         super().__init__()
         self.setWindowTitle("Учет материалов")
 
-        self.showMaximized()
-
         stack = QStackedWidget()
         router = Router(stack)
 
@@ -20,6 +18,7 @@ class MainWindow(QMainWindow):
         router.register_screen("init", init_page)
 
         self.setCentralWidget(stack)
+        self.showMaximized()
 
 
 def main():
