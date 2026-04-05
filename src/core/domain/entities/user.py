@@ -8,14 +8,14 @@ class User(Entity):
     def __init__(
         self,
         id: UserId,
-        username: UserName,
+        username: str,
         password: UserPassword,
         status: UserStatus = UserStatus.INACTIVE,
         created_at: datetime = datetime.now(),
         updated_at: datetime = datetime.now(),
     ) -> None:
         self._id = id
-        self._username = username
+        self._username = UserName(username)
         self._password = password
         self._status = status
         self._created_at = created_at
@@ -55,23 +55,16 @@ class User(Entity):
     def updated_at(self) -> datetime:
         return self._updated_at
 
-    def update_username(self, username: UserName) -> None:
-        self._username = username
+    def update_username(self, username: str) -> None:
+        self._username = UserName(username)
         self._updated_at = datetime.now()
 
-    def update_password(self, password: UserPassword) -> None:
-        self._password = password
+    def update_password(self, password: str) -> None:
+        self._password = UserPassword(password)
         self._updated_at = datetime.now()
-
-    def login(self, username: UserName, password: UserPassword) -> bool:
-        if self._username == username and self._password == password:
-            self._status = UserStatus.LOGGED_IN
-            return True
-
-        return False
 
     @staticmethod
-    def create(username: UserName, password: UserPassword) -> User:
+    def create(username: str, password: str) -> User:
         return User(
             id=UserId.generate(),
             username=username,

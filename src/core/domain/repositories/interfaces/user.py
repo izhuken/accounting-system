@@ -1,9 +1,10 @@
-from abc import ABC, abstractmethod
+from abc import abstractmethod
 
 from core.domain.entities.user import User
+from core.domain.repositories.interfaces.base import IBaseRepository
 
 
-class IUserRepository(ABC):
+class IUserRepository(IBaseRepository):
     @abstractmethod
     def current(self) -> User:
         raise NotImplementedError

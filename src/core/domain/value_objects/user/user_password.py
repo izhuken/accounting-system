@@ -1,17 +1,21 @@
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from hashlib import sha256
 from re import search
 
+from core.config.app import Config
 from core.domain.value_objects.common import ValueObject
 
 
-@dataclass(frozen=True)
+@dataclass
 class UserPassword(ValueObject):
     value: str
+    is_hash: bool = field(default=False)
 
     def __post_init__(self) -> None:
         self.__validate_length()
-        self.value = self.__get_password_hash(self.value)
+
+        if not self.is_hash:
+            self.value = self.__get_password_hash(self.value)
 
     def __str__(self) -> str:
         return self.value
@@ -24,13 +28,16 @@ class UserPassword(ValueObject):
 
     def __validate_length(self) -> None:
         if not self.value:
-            raise ValueError("Имя не может быть пустым!")
+            raise ValueError("Пароль не может быть пустым!")
+
+        if Config.is_dev:
+            return
 
         if len(self.value) < 6:
-            raise ValueError("Размер имени не может быть меньше 6 символов!")
+            raise ValueError("Размер пароля не может быть меньше 6 символов!")
 
         if len(self.value) > 128:
-            raise ValueError("Размер имени не может превышать 128 символов!")
+            raise ValueError("Размер пароля не может превышать 128 символов!")
 
         # проверка на наличие зашлавных символов
         if not search(r"[A-Z]", self.value):

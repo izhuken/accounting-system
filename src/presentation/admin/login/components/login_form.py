@@ -2,12 +2,11 @@ from PySide6.QtCore import Qt, Signal
 from PySide6.QtWidgets import QLabel, QVBoxLayout, QWidget
 
 from shared.colors import Colors
-from shared.components import CommonButton
-from shared.components.common_input import CommonInput, InputType
+from shared.components import CommonButton, CommonInput, InputType
 
 
 class LoginForm(QWidget):
-    submit = Signal()
+    submit = Signal(str)
 
     def __init__(self) -> None:
         super().__init__()
@@ -55,4 +54,4 @@ class LoginForm(QWidget):
         """)
 
     def __submit(self) -> None:
-        self.submit.emit()
+        self.submit.emit(self.password_input.text())
