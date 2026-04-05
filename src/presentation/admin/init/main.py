@@ -34,19 +34,18 @@ class InitPage(QWidget):
         progress_bar.setRange(0, 0)
         progress_bar.setFixedSize(400, 10)
         progress_bar.setStyleSheet(
-            """
-        QProgressBar {
-            border: 1px solid %s;
+            f"""
+        QProgressBar {{
+            border: 1px solid {Colors.GRAY_DISABLED.value};
             border-radius: 5px;
-        }
+        }}
                                    
-        QProgressBar::chunk {
-            background-color: %s;
+        QProgressBar::chunk {{
+            background-color: {Colors.BLUE_DARK.value};
             width: 10px;
             margin: 0px;
-        }
+        }}
         """
-            % (Colors.GRAY_DISABLED.value, Colors.BLUE_DARK.value)
         )
 
         layout.addWidget(progress_bar, alignment=Qt.AlignCenter)
@@ -64,5 +63,8 @@ class InitPage(QWidget):
         self.worker.finished.connect(self.thread.quit)
         self.worker.finished.connect(self.worker.deleteLater)
         self.thread.finished.connect(self.thread.deleteLater)
-
+        self.worker.finished.connect(self.quit)
         self.thread.start()
+
+    def quit(self) -> None:
+        self.navigate.emit("login")

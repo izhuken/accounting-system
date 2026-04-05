@@ -13,4 +13,6 @@ dependencies = [
 ]
 
 [dependency-groups]
-dev = []
+dev = [
+    "watchdog>=6.0.0",
+]
