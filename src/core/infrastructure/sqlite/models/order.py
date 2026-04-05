@@ -17,16 +17,16 @@ class OrderModel(Base):
     )
 
     base_warehouse_id: Mapped[UUID] = mapped_column(
-        ForeignKey("warehouse.id"), nullable=True, default=None
+        ForeignKey("warehouses.id"), nullable=True, default=None
     )
     contractor_warehouse_id: Mapped[UUID] = mapped_column(
-        ForeignKey("warehouse.id"), nullable=True, default=None
+        ForeignKey("warehouses.id"), nullable=True, default=None
     )
     contractor_id: Mapped[UUID] = mapped_column(
-        ForeignKey("contractor.id"), nullable=True, default=None
+        ForeignKey("contractors.id"), nullable=True, default=None
     )
     client_id: Mapped[UUID] = mapped_column(
-        ForeignKey("client.id"), nullable=True, default=None
+        ForeignKey("clients.id"), nullable=True, default=None
     )
 
     created_at: Mapped[datetime] = mapped_column(

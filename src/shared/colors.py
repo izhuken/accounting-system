@@ -12,5 +12,11 @@ class Colors(Enum):
 
     BLUE_DARK = "#2E3B6C"
     BLUE_ACCENT = "#4A5568"
+    BLUE_LIGHT = "#BEE3F8"
 
     GRAY_DISABLED = "#C9C9C9"
+
+    GREEN_LIGHT = "#C6F6D5"
+
+    RED_LIGHT = "#FFE2DC"
+    RED_ACCENT = "#FF5833"

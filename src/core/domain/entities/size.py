@@ -19,8 +19,7 @@ class Size(Entity):
 
     def __eq__(self, obj: object) -> bool:
         if isinstance(obj, Size):
-            return self.id == obj.id
-
+            return self.code == obj.code
         return False
 
     @property

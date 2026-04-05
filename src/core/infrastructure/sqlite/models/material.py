@@ -1,19 +1,20 @@
 from datetime import datetime
 from uuid import UUID, uuid4
 
-from sqlalchemy import DateTime, ForeignKey, String, func
+from sqlalchemy import DateTime, ForeignKey, func
 from sqlalchemy.orm import Mapped, mapped_column
 
 from core.domain.entities.material import Material
 from core.domain.value_objects.material import MaterialId, MaterialName
 from core.infrastructure.sqlite.database import Base
+from core.infrastructure.sqlite.fields import EncryptedString
 
 
 class MaterialModel(Base):
     __tablename__ = "materials"
 
     id: Mapped[UUID] = mapped_column(primary_key=True, default=uuid4, unique=True)
-    name: Mapped[str] = mapped_column(String(256), nullable=False, unique=True)
+    name: Mapped[str] = mapped_column(EncryptedString, nullable=False, unique=True)
 
     # foreign keys
     metric_code: Mapped[int] = mapped_column(ForeignKey("metrics.code"), nullable=False)

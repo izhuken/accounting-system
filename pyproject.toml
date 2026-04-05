@@ -5,8 +5,14 @@ description = "Inventory accounting system"
 readme = "README.md"
 requires-python = ">=3.14"
 dependencies = [
-    "aiosqlite>=0.22.1",
     "alembic>=1.18.4",
-    "flet[cli,desktop]>=0.82.2",
+    "appdirs>=1.4.4",
+    "cryptography>=46.0.6",
+    "pyside6>=6.11.0",
     "sqlalchemy>=2.0.48",
+]
+
+[dependency-groups]
+dev = [
+    "watchdog>=6.0.0",
 ]

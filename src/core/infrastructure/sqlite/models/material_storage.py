@@ -13,9 +13,11 @@ class MaterialStorageModel(Base):
     id: Mapped[UUID] = mapped_column(primary_key=True, unique=True, default=uuid4)
     quantity: Mapped[float] = mapped_column(nullable=False, default=0.0)
 
-    material_id: Mapped[UUID] = mapped_column(ForeignKey("material.id"), nullable=False)
+    material_id: Mapped[UUID] = mapped_column(
+        ForeignKey("materials.id"), nullable=False
+    )
     warehouse_id: Mapped[UUID] = mapped_column(
-        ForeignKey("warehouse.id"), nullable=False
+        ForeignKey("warehouses.id"), nullable=False
     )
 
     created_at: Mapped[datetime] = mapped_column(

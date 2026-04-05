@@ -1,10 +1,10 @@
 from datetime import datetime
 from uuid import UUID, uuid4
 
-from domain.entities.color import Color
 from sqlalchemy import DateTime, String, func
 from sqlalchemy.orm import Mapped, mapped_column
 
+from core.domain.entities.color import Color
 from core.domain.value_objects.color import ColorId, ColorName
 from core.infrastructure.sqlite.database import Base
 

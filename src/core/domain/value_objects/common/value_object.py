@@ -12,3 +12,6 @@ class ValueObject:
             return self.value == obj.value
 
         return False
+
+    def __hash__(self) -> int:
+        return hash(self.value)

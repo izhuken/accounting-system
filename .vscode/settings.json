@@ -5,7 +5,6 @@
   "[python]": {
     "editor.defaultFormatter": "charliermarsh.ruff"
   },
-  "cSpell.words": ["flet"],
   "python.analysis.autoFormatStrings": true,
   "python.analysis.autoSearchPaths": true,
   "editor.quickSuggestions": {

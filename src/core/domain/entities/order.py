@@ -68,8 +68,8 @@ class Order(Entity):
         return self._updated_at
 
     @property
-    def is_backlog(self) -> bool:
-        return self._status == OrderStatus.BACKLOG
+    def is_new(self) -> bool:
+        return self._status == OrderStatus.NEW
 
     @property
     def is_in_progress(self) -> bool:
