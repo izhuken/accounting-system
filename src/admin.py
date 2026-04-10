@@ -1,47 +1,34 @@
-from PySide6.QtGui import QColor, QPalette
-from PySide6.QtWidgets import QApplication, QMainWindow, QStackedWidget
+import warnings
 
-import presentation.resources.admin_rc  # noqa:F401
+from flet import Page, run
+
 from presentation.admin import InitPage, LoginPage
 from shared.colors import Colors
-from shared.lib.font import load_fonts
 from shared.lib.router import Router
 
 
-class MainWindow(QMainWindow):
-    def __init__(self):
-        super().__init__()
-        self.setWindowTitle("Учет материалов")
+async def main(page: Page):
+    warnings.filterwarnings("ignore", category=DeprecationWarning)
 
-        self.stack = QStackedWidget()
-        self.router = Router(self.stack)
+    page.title = "Учет материалов"
+    page.window.icon = "icons/favicon.ico"
+    page.padding = 0
+    page.bgcolor = Colors.BACKGROUND
+    page.expand = 1
 
-        init_page = InitPage()
-        login_page = LoginPage()
+    app_router = Router()
 
-        self.router.register_screen("init", init_page)
-        self.router.register_screen("login", login_page)
+    app_router.set_routes(
+        {
+            "/init": InitPage,
+            "/login": LoginPage,
+        }
+    )
 
-        self.setCentralWidget(self.stack)
-        self.showMaximized()
-
-        self.router.route("init")
-
-
-def main():
-    app = QApplication()
-
-    app.setStyle("Fusion")
-    load_fonts(app)
-    palette = QPalette()
-    palette.setColor(QPalette.ColorRole.Window, QColor(Colors.BACKGROUND.value))
-    palette.setColor(QPalette.ColorRole.Base, QColor(Colors.BACKGROUND.value))
-    app.setPalette(palette)
-
-    window = MainWindow()
-    window.show()
-    app.exec()
+    app_router.page = page
+    page.on_route_change = app_router.route_change
+    page.add(app_router.body)
+    app_router.go("/init")
 
 
-if __name__ == "__main__":
-    main()
+run(main, name="Учет материалов", assets_dir="src/presentation/assets")

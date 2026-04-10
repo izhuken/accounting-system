@@ -1,7 +1,7 @@
 from enum import Enum
 
 
-class Colors(Enum):
+class Colors(str, Enum):
     WHITE = "#FFFFFF"
     BLACK = "#000000"
     BACKGROUND = "#F5F5F5"

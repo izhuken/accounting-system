@@ -8,22 +8,22 @@ class UserService:
     def __init__(self) -> None:
         self._repository = UserRepository()
 
-    def authenticate(self, password: str) -> User:
-        user: User = self._repository.current()
+    async def authenticate(self, password: str) -> User:
+        user: User = await self._repository.current()
 
         if user.password == UserPassword(password):
             return user
 
         raise AuthenticationException
 
-    def exists(self, user: User) -> bool:
-        return self._repository.exists(user)
+    async def exists(self, user: User) -> bool:
+        return await self._repository.exists(user)
 
-    def current(self) -> User:
-        return self._repository.current()
+    async def current(self) -> User:
+        return await self._repository.current()
 
-    def save(self, user: User) -> User:
-        return self._repository.save(user)
+    async def save(self, user: User) -> User:
+        return await self._repository.save(user)
 
-    def remove(self, user: User) -> User:
-        return self._repository.remove(user)
+    async def remove(self, user: User) -> User:
+        return await self._repository.remove(user)

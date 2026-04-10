@@ -1,34 +1,40 @@
-from PySide6.QtCore import Qt
-from PySide6.QtWidgets import QPushButton
+from typing import Callable
+
+from flet import (
+    CupertinoButton,
+    Row,
+    Text,
+    TextAlign,
+    border_radius,
+    padding,
+)
 
 from shared.colors import Colors
 
 
-class CommonButton(QPushButton):
-    def __init__(self, text: str) -> None:
-        super().__init__(text)
-
-        self.setCursor(Qt.PointingHandCursor)
-        self.adjustSize()
-
-        self.setStyleSheet(
-            f"""
-            CommonButton {{
-                border-radius: 5px;
-                border: none;
-                padding: 20px 14px;
-                
-                font-size: 16px;
-                font-family: "Inter";
-                font-weight: 500;
-                                        
-                color: {Colors.WHITE.value};
-                background-color: {Colors.BLUE_DARK.value};
-            }}
-
-            CommonButton:disabled {{
-                color: {Colors.TEXT_DISABLED.value};
-                background-color: {Colors.GRAY_DISABLED.value};
-            }}
-            """
+class CommonButton(CupertinoButton):
+    def __init__(
+        self,
+        text: str,
+        on_click: Callable = lambda x: None,
+        disabled: bool = False,
+        expand: bool | int | None = None,
+    ):
+        super().__init__(
+            content=Row(
+                [
+                    Text(
+                        text,
+                        text_align=TextAlign.CENTER,
+                        expand=1,
+                        color=Colors.WHITE,
+                    )
+                ]
+            ),
+            on_click=on_click,
+            padding=padding.all(16.0),
+            border_radius=border_radius.all(5),
+            bgcolor=Colors.BLUE_DARK,
+            disabled=disabled,
+            expand=expand,
         )
