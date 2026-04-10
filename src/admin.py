@@ -2,7 +2,7 @@ from PySide6.QtGui import QColor, QPalette
 from PySide6.QtWidgets import QApplication, QMainWindow, QStackedWidget
 
 import presentation.resources.admin_rc  # noqa:F401
-from presentation.admin import InitPage, LoginPage
+from presentation.admin import InitPage, LoginPage, OrderListPage
 from shared.colors import Colors
 from shared.lib.font import load_fonts
 from shared.lib.router import Router
@@ -18,9 +18,11 @@ class MainWindow(QMainWindow):
 
         init_page = InitPage()
         login_page = LoginPage()
+        order_list_page = OrderListPage()
 
         self.router.register_screen("init", init_page)
         self.router.register_screen("login", login_page)
+        self.router.register_screen("orders/list", order_list_page)
 
         self.setCentralWidget(self.stack)
         self.showMaximized()

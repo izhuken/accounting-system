@@ -4,8 +4,6 @@ from PySide6.QtWidgets import QLabel, QProgressBar, QVBoxLayout, QWidget
 from core.service.command import InitThreadCommand
 from shared.colors import Colors
 
-# from shared.lib import Toaster
-
 
 class InitPage(QWidget):
     navigate = Signal(str)
