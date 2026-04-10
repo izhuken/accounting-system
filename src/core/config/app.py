@@ -14,8 +14,15 @@ class _ApplicationConfig:
     db_path: str = field(default="")
 
     def __post_init__(self) -> None:
+        if self.is_dev:
+            self.data_dir = path.join("storage/data", "dev")
+
         self.db_path = path.join(self.data_dir, "admin.db")
-        self.db_url = f"sqlite:///{self.db_path}"
+        self.db_url = f"sqlite+aiosqlite:///{self.db_path}"
+
+    @property
+    def sync_db_url(self) -> str:
+        return f"sqlite:///{self.db_path}"
 
 
 Config = _ApplicationConfig()

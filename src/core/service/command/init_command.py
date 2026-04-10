@@ -1,13 +1,9 @@
-from PySide6.QtCore import Slot
-
 from core.service.app import InitDBService
 
-from .ithreadcommand import IThreadCommand
+from .icommand import ICommand
 
 
-class InitThreadCommand(IThreadCommand):
-    @Slot()
-    def execute(self):
+class InitCommand(ICommand):
+    async def execute(self):
         init_service = InitDBService()
-        init_service.init_db()
-        self.finished.emit()
+        await init_service.init_db()

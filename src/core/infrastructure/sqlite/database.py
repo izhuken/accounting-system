@@ -1,14 +1,22 @@
 from typing import Any
 
-from sqlalchemy import JSON, Engine, create_engine
-from sqlalchemy.orm import DeclarativeBase, Session, sessionmaker
+from sqlalchemy import JSON
+from sqlalchemy.ext.asyncio import (
+    AsyncEngine,
+    AsyncSession,
+    async_sessionmaker,
+    create_async_engine,
+)
+from sqlalchemy.orm import DeclarativeBase
 
 from core.config import Config
 from core.domain.entities.entity import Entity
 
-SessionEngine: Engine = create_engine(Config.db_url)
+SessionEngine: AsyncEngine = create_async_engine(Config.db_url)
 
-SessionLocal: sessionmaker[Session] = sessionmaker(bind=SessionEngine, autoflush=True)
+SessionLocal: async_sessionmaker[AsyncSession] = async_sessionmaker(
+    bind=SessionEngine, autoflush=True
+)
 
 
 class Base(DeclarativeBase):

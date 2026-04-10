@@ -9,7 +9,7 @@ class IBaseRepository(ABC):
     model: Base
 
     @abstractmethod
-    def all(
+    async def all(
         self,
         records: int = 50,
         page: int = 0,
@@ -18,9 +18,9 @@ class IBaseRepository(ABC):
         raise NotImplementedError
 
     @abstractmethod
-    def save(self, entity: Entity) -> Base:
+    async def save(self, entity: Entity) -> Base:
         raise NotImplementedError
 
     @abstractmethod
-    def remove(self, entity: Entity) -> Base:
+    async def remove(self, entity: Entity) -> Base:
         raise NotImplementedError

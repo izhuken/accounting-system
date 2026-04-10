@@ -13,12 +13,14 @@ from core.infrastructure.sqlite.models import UserModel
 class UserRepository(IUserRepository):
     model: Base = UserModel
 
-    def current(self) -> User:
-        with SessionLocal() as session:
-            response: UserModel | None = session.execute(
-                select(UserModel)
-                .select_from(UserModel)
-                .filter(UserModel.status == UserStatus.LOGGED_IN)
+    async def current(self) -> User:
+        async with SessionLocal() as session:
+            response: UserModel | None = (
+                await session.execute(
+                    select(UserModel)
+                    .select_from(UserModel)
+                    .filter(UserModel.status == UserStatus.LOGGED_IN)
+                )
             ).scalar_one_or_none()
 
             if not response:
@@ -26,13 +28,13 @@ class UserRepository(IUserRepository):
 
             return response.to_entity()
 
-    def all(
+    async def all(
         self,
         records: int = 50,
         page: int = 0,
         order_by: str | None = None,
     ) -> Paginated[User]:
-        with SessionLocal() as session:
+        async with SessionLocal() as session:
             count_statement = select(func.count(self.model.id))
             statement = (
                 select(self.model)
@@ -42,8 +44,8 @@ class UserRepository(IUserRepository):
             )
             statement = self.__ordering_statement(statement, order_by)
 
-            fetched_result = session.execute(statement).scalars().unique().all()
-            count_result = session.execute(count_statement).scalar()
+            fetched_result = await session.execute(statement).scalars().unique().all()
+            count_result = await session.execute(count_statement).scalar()
 
             if not fetched_result:
                 raise FetchException
@@ -56,14 +58,16 @@ class UserRepository(IUserRepository):
                 has_next=(count_result > page * records),
             )
 
-    def exists(self, entity: User) -> bool:
+    async def exists(self, entity: User) -> bool:
         entity_model = self.model.from_entity(entity)
 
-        with SessionLocal() as session:
-            response = session.execute(
-                select(self.model)
-                .select_from(self.model)
-                .filter(self.model.id == entity_model.id)
+        async with SessionLocal() as session:
+            response = (
+                await session.execute(
+                    select(self.model)
+                    .select_from(self.model)
+                    .filter(self.model.id == entity_model.id)
+                )
             ).scalar_one_or_none()
 
             if not response:
@@ -71,24 +75,26 @@ class UserRepository(IUserRepository):
 
             return True
 
-    def save(self, entity: User) -> User:
+    async def save(self, entity: User) -> User:
         entity_model = self.model.from_entity(entity)
 
-        with SessionLocal() as session:
+        async with SessionLocal() as session:
             try:
-                merged_model = session.merge(entity_model)
-                session.commit()
+                merged_model = await session.merge(entity_model)
+                await session.commit()
                 return merged_model.to_entity()
             except SQLAlchemyError:
-                session.rollback()
+                await session.rollback()
                 raise SaveException
 
-    def remove(self, entity: User) -> User:
+    async def remove(self, entity: User) -> User:
         entity_model = self.model.from_entity(entity)
 
-        with SessionLocal() as session:
-            session.execute(delete(self.model).where(self.model.id == entity_model.id))
-            session.commit()
+        async with SessionLocal() as session:
+            await session.execute(
+                delete(self.model).where(self.model.id == entity_model.id)
+            )
+            await session.commit()
 
         return entity
 
