@@ -47,7 +47,7 @@ class LoginForm(Column):
         try:
             await service.authenticate(self.__password_ref.current.value)
             snack(self.page, "Успешно! Вы вошли в систему")
-            self.router.go("/order")
+            self.router.go("/orders")
         except AuthenticationException as e:
             return snack(self.page, e.message, SnackBarType.ERROR)
         except ValueError as e:

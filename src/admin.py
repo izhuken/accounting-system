@@ -2,7 +2,18 @@ import warnings
 
 from flet import Page, run
 
-from presentation.admin import InitPage, LoginPage
+from presentation.admin import (
+    ClientListPage,
+    ContactorListPage,
+    InitPage,
+    InvoiceListPage,
+    LoginPage,
+    MaterialListPage,
+    OrderListPage,
+    ProductListPage,
+    UserListPage,
+    WarehouseListPage,
+)
 from shared.colors import Colors
 from shared.lib.router import Router
 
@@ -15,6 +26,7 @@ async def main(page: Page):
     page.padding = 0
     page.bgcolor = Colors.BACKGROUND
     page.expand = 1
+    page.window.maximized = True
 
     app_router = Router()
 
@@ -22,6 +34,22 @@ async def main(page: Page):
         {
             "/init": InitPage,
             "/login": LoginPage,
+            # orders section
+            "/orders": OrderListPage,
+            # invoices section
+            "/invoices": InvoiceListPage,
+            # products section
+            "/products": ProductListPage,
+            # materials section
+            "/materials": MaterialListPage,
+            # warehouses section
+            "/warehouses": WarehouseListPage,
+            # clients section
+            "/clients": ClientListPage,
+            # contractors section
+            "/contractors": ContactorListPage,
+            # users section
+            "/users": UserListPage,
         }
     )
 

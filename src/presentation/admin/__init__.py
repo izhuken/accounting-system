@@ -1,2 +1,10 @@
+from .clients.all.main import ClientListPage  # noqa: F401
+from .contractors.all.main import ContactorListPage  # noqa: F401
 from .init.main import InitPage  # noqa: F401
+from .invoices.all.main import InvoiceListPage  # noqa: F401
 from .login.main import LoginPage  # noqa: F401
+from .materials.all.main import MaterialListPage  # noqa: F401
+from .orders.all.main import OrderListPage  # noqa: F401
+from .products.all.main import ProductListPage  # noqa: F401
+from .users.all.main import UserListPage  # noqa: F401
+from .warehouses.all.main import WarehouseListPage  # noqa: F401
