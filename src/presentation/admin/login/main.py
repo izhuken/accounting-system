@@ -3,7 +3,8 @@ from flet import (
     alignment,
 )
 
-from core.service.app.user_service import UserService
+from core.config import Config
+from core.service.app import UserService
 from shared.lib.router import Router
 
 from .components.login_form import LoginForm
@@ -20,6 +21,5 @@ class LoginPage(Container):
         )
 
     def did_mount(self):
-        pass
-        # if APP_CONFIG.is_dev_mode:
-        # self.router.go("/order")
+        if Config.is_dev:
+            self.router.go("/orders")

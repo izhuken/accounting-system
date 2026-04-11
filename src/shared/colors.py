@@ -11,6 +11,7 @@ class Colors(str, Enum):
     TEXT_DISABLED = "#A7A7A7"
 
     BLUE_DARK = "#2E3B6C"
+    BLUE_ACTIVE_DARK = "#40518E"
     BLUE_ACCENT = "#4A5568"
     BLUE_LIGHT = "#BEE3F8"
 
