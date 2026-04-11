@@ -1,3 +1,5 @@
+from math import ceil
+
 from sqlalchemy import Select, delete, func, select
 from sqlalchemy.exc import SQLAlchemyError
 
@@ -44,16 +46,17 @@ class UserRepository(IUserRepository):
             )
             statement = self.__ordering_statement(statement, order_by)
 
-            fetched_result = await session.execute(statement).scalars().unique().all()
-            count_result = await session.execute(count_statement).scalar()
+            fetched_result = (await session.execute(statement)).scalars().unique().all()
+            count_result = (await session.execute(count_statement)).scalar()
 
             if not fetched_result:
                 raise FetchException
 
             return Paginated(
-                items=[item.to_entity() for item in fetched_result],
+                data=[item.to_entity() for item in fetched_result],
                 count=count_result,
                 page=page,
+                pages=ceil(count_result / records),
                 has_previous=(page > 1),
                 has_next=(count_result > page * records),
             )

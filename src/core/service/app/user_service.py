@@ -1,5 +1,6 @@
+from core.domain.dto import Paginated
 from core.domain.entities.user import User
-from core.domain.value_objects.user.user_password import UserPassword
+from core.domain.value_objects.user import UserPassword
 from core.infrastructure.sqlite.repositories import UserRepository
 from core.service.exc import AuthenticationException
 
@@ -7,6 +8,9 @@ from core.service.exc import AuthenticationException
 class UserService:
     def __init__(self) -> None:
         self._repository = UserRepository()
+
+    async def all(self) -> Paginated[User]:
+        return await self._repository.all()
 
     async def authenticate(self, password: str) -> User:
         user: User = await self._repository.current()

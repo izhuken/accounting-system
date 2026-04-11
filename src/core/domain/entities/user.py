@@ -63,6 +63,15 @@ class User(Entity):
         self._password = UserPassword(password)
         self._updated_at = datetime.now()
 
+    def to_dict(self) -> dict:
+        return {
+            "id": self.id.value,
+            "username": self.username.value,
+            "status": self.status.value,
+            "created_at": self.created_at.isoformat(),
+            "updated_at": self.updated_at.isoformat(),
+        }
+
     @staticmethod
     def create(username: str, password: str) -> User:
         return User(

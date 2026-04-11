@@ -5,6 +5,7 @@ class Colors(str, Enum):
     WHITE = "#FFFFFF"
     BLACK = "#000000"
     BACKGROUND = "#F5F5F5"
+    TRANSPARENT = "transparent"
 
     TEXT_DARK = "#1F1713"
     TEXT_PLACEHOLDER = "#DAE3EB"
@@ -12,6 +13,7 @@ class Colors(str, Enum):
 
     BLUE_DARK = "#2E3B6C"
     BLUE_ACTIVE_DARK = "#40518E"
+    BLUE_OCEAN = "#8190C7"
     BLUE_ACCENT = "#4A5568"
     BLUE_LIGHT = "#BEE3F8"
 

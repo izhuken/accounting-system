@@ -5,6 +5,7 @@ from dataclasses import dataclass
 class Paginated[T]:
     data: list[T]
     page: int
+    pages: int
     count: int
     has_next: bool
     has_previous: bool
