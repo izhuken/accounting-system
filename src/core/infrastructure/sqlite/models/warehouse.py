@@ -47,7 +47,7 @@ class WarehouseModel(Base):
     def from_entity(entity: Warehouse) -> WarehouseModel:
         return WarehouseModel(
             id=entity.id.value,
-            name=entity.name,
+            name=entity.name.value,
             city=entity.address.city,
             street=entity.address.street,
             house=entity.address.house,
