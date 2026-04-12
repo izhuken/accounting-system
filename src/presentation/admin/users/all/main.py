@@ -54,7 +54,7 @@ class UserListPage(CommonPage):
 
     async def __fetch_data(self, page: int = 0):
         user_service = UserService()
-        paginated_response = await user_service.all(records=5, page=page)
+        paginated_response = await user_service.all(records=20, page=page)
         self.__table_ref.current.refresh(
             TableData(
                 data=[entity.to_dict() for entity in paginated_response.data],

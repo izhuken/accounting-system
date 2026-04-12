@@ -1,6 +1,15 @@
 from typing import Callable
 
-from flet import Container, CupertinoButton, Image, MainAxisAlignment, Ref, Row, border
+from flet import (
+    Container,
+    CupertinoButton,
+    Image,
+    MainAxisAlignment,
+    MouseCursor,
+    Ref,
+    Row,
+    border,
+)
 
 from shared.colors import Colors
 from shared.lib.asset import assets
@@ -33,6 +42,7 @@ class AddConnector(Container):
                         ),
                         bgcolor=Colors.BLUE_DARK,
                         disabled_bgcolor=Colors.GRAY_DISABLED,
+                        mouse_cursor=MouseCursor.CLICK,
                         height=32,
                         width=32,
                         padding=10,

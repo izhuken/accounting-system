@@ -7,10 +7,7 @@ from sqlalchemy.orm import Mapped, mapped_column
 from core.domain.entities.contractor import Contractor
 from core.domain.value_objects.contractor import (
     ContractorAddress,
-    ContractorEmail,
     ContractorId,
-    ContractorName,
-    ContractorPhone,
 )
 from core.infrastructure.sqlite.database import Base
 from core.infrastructure.sqlite.fields import EncryptedString
@@ -40,9 +37,9 @@ class ContractorModel(Base):
     def to_entity(self) -> Contractor:
         return Contractor(
             id=ContractorId(self.id),
-            name=ContractorName(self.name),
-            phone=ContractorPhone(self.phone),
-            email=ContractorEmail(self.email),
+            name=self.name,
+            phone=self.phone,
+            email=self.email,
             address=ContractorAddress(
                 city=self.city,
                 street=self.street,

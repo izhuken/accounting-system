@@ -1,7 +1,16 @@
 from typing import Any
 from uuid import UUID
 
-from flet import AlertDialog, Alignment, Column, FontWeight, Text, TextButton
+from flet import (
+    AlertDialog,
+    Alignment,
+    ButtonStyle,
+    Column,
+    FontWeight,
+    MouseCursor,
+    Text,
+    TextButton,
+)
 
 from core.domain.entities.entity import Entity
 from core.domain.repositories.exc import SaveException
@@ -36,7 +45,11 @@ class CommonCreateModal(AlertDialog):
                 alignment=Alignment.CENTER,
             ),
             actions=[
-                TextButton("Закрыть", on_click=self.close),
+                TextButton(
+                    "Закрыть",
+                    on_click=self.close,
+                    style=ButtonStyle(mouse_cursor=MouseCursor.CLICK),
+                ),
             ],
             bgcolor=Colors.BACKGROUND,
             actions_alignment=Alignment.CENTER,
@@ -46,7 +59,7 @@ class CommonCreateModal(AlertDialog):
         payload = self._complect_fields()
 
         try:
-            new_entity = self.entity.create(**payload)
+            new_entity = self.create_entity(payload)
         except ValueError as e:
             return snack(self.page, str(e), SnackBarType.ERROR)
 
@@ -59,6 +72,9 @@ class CommonCreateModal(AlertDialog):
         self.close()
         self.page.pubsub.send_all_on_topic(self.topic_name, "refresh")
         snack(self.page, "Успешно!", SnackBarType.SUCCESS)
+
+    def create_entity(self, payload: dict) -> Entity:
+        raise NotImplementedError
 
     def close(self, *args, **kwargs):
         for field in self.fields.values():
