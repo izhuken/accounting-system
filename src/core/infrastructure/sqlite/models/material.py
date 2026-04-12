@@ -5,7 +5,7 @@ from sqlalchemy import DateTime, ForeignKey, func
 from sqlalchemy.orm import Mapped, mapped_column
 
 from core.domain.entities.material import Material
-from core.domain.value_objects.material import MaterialId, MaterialName
+from core.domain.value_objects.material import MaterialId
 from core.infrastructure.sqlite.database import Base
 from core.infrastructure.sqlite.fields import EncryptedString
 
@@ -17,7 +17,7 @@ class MaterialModel(Base):
     name: Mapped[str] = mapped_column(EncryptedString, nullable=False, unique=True)
 
     # foreign keys
-    metric_code: Mapped[int] = mapped_column(ForeignKey("metrics.code"), nullable=False)
+    metric_code: Mapped[int] = mapped_column(ForeignKey("metrics.code"), nullable=True)
 
     created_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True), server_default=func.now()
@@ -29,7 +29,7 @@ class MaterialModel(Base):
     def to_entity(self) -> Material:
         return Material(
             id=MaterialId(self.id),
-            name=MaterialName(self.name),
+            name=self.name,
             created_at=self.created_at,
             updated_at=self.updated_at,
         )

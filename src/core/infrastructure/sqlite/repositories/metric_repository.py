@@ -1,6 +1,6 @@
 from math import ceil
 
-from sqlalchemy import Select, delete, func, select
+from sqlalchemy import delete, func, select
 
 from core.domain.dto import Paginated
 from core.domain.entities import Metric
@@ -29,7 +29,7 @@ class MetricRepository(BaseRepository, IMetricRepository):
                 .offset(page * records)
                 .limit(records)
             )
-            statement = self.__ordering_statement(statement, order_by)
+            statement = self._ordering_statement(statement, order_by)
 
             fetched_result = (await session.execute(statement)).scalars().unique().all()
             count_result = (await session.execute(count_statement)).scalar()
@@ -90,21 +90,3 @@ class MetricRepository(BaseRepository, IMetricRepository):
             await session.commit()
 
         return entity
-
-    def __ordering_statement(
-        self, statement: Select, order_column: str | None = None
-    ) -> Select:
-        reverse = False
-
-        if order_column is None:
-            return statement
-
-        if order_column.startswith("-"):
-            reverse = True
-            order_column = order_column[1:]
-
-        if not hasattr(self.model, order_column):
-            return statement
-
-        attribute = getattr(self.model, order_column)
-        return statement.order_by(attribute.desc() if reverse else attribute.asc())

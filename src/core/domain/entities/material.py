@@ -9,13 +9,13 @@ class Material(Entity):
     def __init__(
         self,
         id: MaterialId,
-        name: MaterialName,
-        metric: Metric = None,
+        name: str,
+        metric: Metric | None = None,
         created_at: datetime = datetime.now(),
         updated_at: datetime = datetime.now(),
     ) -> None:
         self._id = id
-        self._name = name
+        self._name = MaterialName(name)
         self._metric = metric
         self._created_at = created_at
         self._updated_at = updated_at
@@ -46,16 +46,26 @@ class Material(Entity):
     def updated_at(self) -> datetime:
         return self._updated_at
 
-    def update_name(self, name: MaterialName) -> None:
-        self._name = name
+    def update_name(self, name: str) -> None:
+        self._name = MaterialName(name)
         self._updated_at = datetime.now()
 
     def update_metric(self, metric: Metric) -> None:
         self._metric = metric
         self._updated_at = datetime.now()
 
+    def to_dict(self) -> dict:
+        return {
+            "id": self.id.value,
+            "name": self.name.value,
+            "metric": self.metric.to_dict() if self.metric else None,
+            "created_at": self.created_at.isoformat(),
+            "updated_at": self.updated_at.isoformat(),
+        }
+
     @staticmethod
-    def create(name: MaterialName, metric: Metric) -> Material:
+    # FIXME: фиксанить, metric не может быть None
+    def create(name: str, metric: Metric | None = None) -> Material:
         return Material(
             id=MaterialId.generate(),
             name=name,

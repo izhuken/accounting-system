@@ -31,7 +31,7 @@ class BaseRepository(IBaseRepository):
                 .offset(page * records)
                 .limit(records)
             )
-            statement = self.__ordering_statement(statement, order_by)
+            statement = self._ordering_statement(statement, order_by)
 
             fetched_result = (await session.execute(statement)).scalars().unique().all()
             count_result = (await session.execute(count_statement)).scalar()
@@ -104,7 +104,7 @@ class BaseRepository(IBaseRepository):
 
         return entity
 
-    def __ordering_statement(
+    def _ordering_statement(
         self, statement: Select, order_column: str | None = None
     ) -> Select:
         reverse = False

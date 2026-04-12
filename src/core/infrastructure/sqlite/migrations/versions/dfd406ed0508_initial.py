@@ -184,7 +184,7 @@ def upgrade() -> None:
         "materials",
         sa.Column("id", sa.Uuid(), nullable=False),
         sa.Column("name", EncryptedString(), nullable=False),
-        sa.Column("metric_code", sa.Integer(), nullable=False),
+        sa.Column("metric_code", sa.Integer(), nullable=True),
         sa.Column(
             "created_at",
             sa.DateTime(timezone=True),
