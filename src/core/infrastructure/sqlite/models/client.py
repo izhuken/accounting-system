@@ -7,10 +7,7 @@ from sqlalchemy.orm import Mapped, mapped_column
 from core.domain.entities.client import Client
 from core.domain.value_objects.client import (
     ClientAddress,
-    ClientEmail,
     ClientId,
-    ClientName,
-    ClientPhone,
 )
 from core.infrastructure.sqlite.database import Base
 from core.infrastructure.sqlite.fields import EncryptedString
@@ -40,9 +37,9 @@ class ClientModel(Base):
     def to_entity(self) -> Client:
         return Client(
             id=ClientId(self.id),
-            name=ClientName(self.name),
-            phone=ClientPhone(self.phone),
-            email=ClientEmail(self.email),
+            name=self.name,
+            phone=self.phone,
+            email=self.email,
             address=ClientAddress(
                 city=self.city,
                 street=self.street,
