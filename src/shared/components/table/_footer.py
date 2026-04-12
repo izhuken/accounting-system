@@ -1,13 +1,13 @@
-from typing import Callable
-
 from flet import (
     BorderRadius,
+    ButtonStyle,
     Container,
     ControlState,
     FontWeight,
     Icon,
     Icons,
     MainAxisAlignment,
+    MouseCursor,
     Ref,
     Row,
     Text,
@@ -17,18 +17,18 @@ from flet import (
 
 from shared.colors import Colors
 
-from .dto import TableData
+from .dto import TableData, TableRefreshEvent
 
 
 class TableFooter(Container):
     def __init__(
         self,
         payload: TableData,
-        on_next: Callable | None = None,
-        on_previous: Callable | None = None,
+        topic_name: str | None = None,
         ref=None,
     ):
         self.payload = payload
+        self.topic_name = topic_name
         self._color_statement = {
             ControlState.DEFAULT: Colors.WHITE,
             ControlState.DISABLED: Colors.GRAY_DISABLED,
@@ -58,11 +58,12 @@ class TableFooter(Container):
                             alignment=MainAxisAlignment.CENTER,
                         ),
                         disabled=not self.payload.has_previous,
-                        on_click=on_previous,
+                        on_click=self.__on_previous,
+                        style=ButtonStyle(mouse_cursor=MouseCursor.CLICK),
                         ref=self._previous_button_ref,
                     ),
                     Text(
-                        f"Страница {self.payload.page} из {self.payload.total_pages or 1}",
+                        f"Страница {self.payload.page + 1} из {self.payload.total_pages or 1}",
                         weight=FontWeight.W_600,
                         color=Colors.WHITE,
                         ref=self._pages_count_ref,
@@ -84,8 +85,9 @@ class TableFooter(Container):
                             alignment=MainAxisAlignment.CENTER,
                             spacing=2,
                         ),
-                        disabled=not self.payload.has_next,
-                        on_click=on_next,
+                        disabled=self.payload.has_next,
+                        on_click=self.__on_next,
+                        style=ButtonStyle(mouse_cursor=MouseCursor.CLICK),
                         ref=self._next_button_ref,
                     ),
                 ],
@@ -105,10 +107,20 @@ class TableFooter(Container):
     def refresh(self, new_data: TableData):
         self.payload = new_data
         self._pages_count_ref.current.value = (
-            f"Страница {new_data.page} из {new_data.total_pages or 1}"
+            f"Страница {new_data.page + 1} из {new_data.total_pages or 1}"
         )
         self._next_button_ref.current.disabled = not new_data.has_next
         self._previous_button_ref.current.disabled = not new_data.has_previous
         self._next_button_ref.current.update()
         self._previous_button_ref.current.update()
         self._pages_count_ref.current.update()
+
+    def __on_previous(self, *args, **kwargs):
+        self.page.pubsub.send_all_on_topic(
+            self.topic_name, TableRefreshEvent(self.payload.page, self.payload.page - 1)
+        )
+
+    def __on_next(self, *args, **kwargs):
+        self.page.pubsub.send_all_on_topic(
+            self.topic_name, TableRefreshEvent(self.payload.page, self.payload.page + 1)
+        )

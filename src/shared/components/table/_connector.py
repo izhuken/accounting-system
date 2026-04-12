@@ -3,6 +3,7 @@ from typing import Callable
 from flet import Container, CupertinoButton, Image, MainAxisAlignment, Ref, Row, border
 
 from shared.colors import Colors
+from shared.lib.asset import assets
 
 
 class AddConnector(Container):
@@ -22,7 +23,7 @@ class AddConnector(Container):
                         content=Row(
                             [
                                 Image(
-                                    "assets/icons/plus.svg",
+                                    assets("icons/plus.svg"),
                                     height=10,
                                     width=10,
                                     color=self._image_color_config["active"],
@@ -45,5 +46,5 @@ class AddConnector(Container):
             height=50,
             border=border.all(1, Colors.BLACK),
             ref=ref,
-            bgcolor=Colors.GRAY_DISABLED,
+            bgcolor=Colors.BACKGROUND,
         )

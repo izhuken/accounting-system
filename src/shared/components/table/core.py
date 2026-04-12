@@ -21,15 +21,15 @@ class Table(Container):
         self,
         accessors: list[TableAccessor] = [],
         payload: TableData = TableData(),
+        topic_name: str | None = None,
         on_add: Callable | None = None,
         on_row_click: Callable | None = None,
-        on_next: Callable | None = None,
-        on_previous: Callable | None = None,
         ref: Ref[Container] = None,
     ):
         self.data = []
         self.editable = False
 
+        self.topic_name = topic_name
         self.accessors = accessors
         self.payload = payload
         self.on_row_click = on_row_click
@@ -39,7 +39,7 @@ class Table(Container):
             controls=[], spacing=0, expand=True, expand_loose=True, scroll="always"
         )
         self.table_connector = AddConnector(on_add) if on_add else Container()
-        self.table_footer = TableFooter(self.payload, on_next, on_previous)
+        self.table_footer = TableFooter(self.payload, self.topic_name)
 
         super().__init__(
             content=Column(

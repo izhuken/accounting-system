@@ -77,5 +77,5 @@ class User(Entity):
         return User(
             id=UserId.generate(),
             username=username,
-            password=password,
+            password=UserPassword(password),
         )

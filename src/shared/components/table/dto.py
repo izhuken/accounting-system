@@ -16,6 +16,12 @@ class TableAccessor:
 
 
 @dataclass
+class TableRefreshEvent:
+    current_page: int
+    next_page: int
+
+
+@dataclass
 class TableData:
     data: list[dict[str, Any]] = field(default_factory=list)
     has_next: bool = field(default=False)
