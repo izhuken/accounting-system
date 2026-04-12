@@ -54,5 +54,5 @@ class ActionsView(Row):
     async def delete_user(self):
         command = UserRemoveCommand()
         await command.execute(self.payload.get("id"))
-        snack(self.page, "Пользователь успешно удален!")
+        snack(self.page, "Запись успешно удалена!")
         self.page.pubsub.send_all_on_topic(self.topic_name, "refresh")

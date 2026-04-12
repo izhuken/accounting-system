@@ -17,3 +17,6 @@ class UserCreateModal(CommonCreateModal):
                 "password": CommonInput(label="Пароль"),
             }
         )
+
+    def create_entity(self, payload: dict) -> User:
+        return User.create(**payload)

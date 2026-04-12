@@ -1,7 +1,16 @@
 from typing import Any
 from uuid import UUID
 
-from flet import AlertDialog, Alignment, Column, FontWeight, Text, TextButton
+from flet import (
+    AlertDialog,
+    Alignment,
+    ButtonStyle,
+    Column,
+    FontWeight,
+    MouseCursor,
+    Text,
+    TextButton,
+)
 
 from core.domain.entities.entity import Entity
 from core.domain.repositories.exc.save import SaveException
@@ -37,7 +46,11 @@ class CommonUpdateModal(AlertDialog):
                 alignment=Alignment.CENTER,
             ),
             actions=[
-                TextButton("Закрыть", on_click=self.close),
+                TextButton(
+                    "Закрыть",
+                    on_click=self.close,
+                    style=ButtonStyle(mouse_cursor=MouseCursor.CLICK),
+                ),
             ],
             bgcolor=Colors.BACKGROUND,
             actions_alignment=Alignment.CENTER,

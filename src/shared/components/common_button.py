@@ -2,6 +2,7 @@ from typing import Callable
 
 from flet import (
     CupertinoButton,
+    MouseCursor,
     Row,
     Text,
     TextAlign,
@@ -34,6 +35,7 @@ class CommonButton(CupertinoButton):
             on_click=on_click,
             padding=padding.all(16.0),
             border_radius=border_radius.all(5),
+            mouse_cursor=MouseCursor.CLICK,
             bgcolor=Colors.BLUE_DARK,
             disabled=disabled,
             expand=expand,

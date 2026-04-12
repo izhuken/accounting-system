@@ -36,7 +36,7 @@ class BaseRepository(IBaseRepository):
             fetched_result = (await session.execute(statement)).scalars().unique().all()
             count_result = (await session.execute(count_statement)).scalar()
 
-            if not fetched_result:
+            if fetched_result is None:
                 raise FetchException
 
             total_pages = ceil(count_result / records)
