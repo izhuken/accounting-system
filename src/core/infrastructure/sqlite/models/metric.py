@@ -3,9 +3,7 @@ from datetime import datetime
 from sqlalchemy import DateTime, Integer, String, func
 from sqlalchemy.orm import Mapped, mapped_column
 
-from core.domain.entities.metric_code import Metric
-from core.domain.value_objects.metric.metric_code import MetricCode
-from core.domain.value_objects.metric.metric_name import MetricName
+from core.domain.entities.metric import Metric
 from core.infrastructure.sqlite.database import Base
 
 
@@ -26,8 +24,8 @@ class MetricModel(Base):
 
     def to_entity(self) -> Metric:
         return Metric(
-            code=MetricCode(self.code),
-            name=MetricName(self.name),
+            code=self.code,
+            name=self.name,
             created_at=self.created_at,
             updated_at=self.updated_at,
         )

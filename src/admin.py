@@ -9,6 +9,7 @@ from presentation.admin import (
     InvoiceListPage,
     LoginPage,
     MaterialListPage,
+    MetricListPage,
     OrderListPage,
     ProductListPage,
     UserListPage,
@@ -42,6 +43,7 @@ async def main(page: Page):
             "/products": ProductListPage,
             # materials section
             "/materials": MaterialListPage,
+            "/materials/metrics": MetricListPage,
             # warehouses section
             "/warehouses": WarehouseListPage,
             # clients section
