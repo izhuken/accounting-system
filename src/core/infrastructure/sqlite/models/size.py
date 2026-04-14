@@ -4,8 +4,6 @@ from sqlalchemy import DateTime, String, func
 from sqlalchemy.orm import Mapped, mapped_column
 
 from core.domain.entities.size import Size
-from core.domain.value_objects.size.size_code import SizeCode
-from core.domain.value_objects.size.size_height import SizeHeight
 from core.infrastructure.sqlite.database import Base
 
 
@@ -26,8 +24,8 @@ class SizeModel(Base):
 
     def to_entity(self) -> Size:
         return Size(
-            id=SizeCode(self.code),
-            height=SizeHeight(self.height),
+            id=self.code,
+            height=self.height,
             created_at=self.created_at,
             updated_at=self.updated_at,
         )

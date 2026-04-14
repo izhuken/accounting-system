@@ -2,11 +2,11 @@ from typing import Any
 
 from flet import Ref
 
-from core.service.app import MaterialService
-from presentation.admin.materials.components import (
-    MaterialActionsView,
-    MaterialCreateModal,
-    MaterialTabs,
+from core.service.app import ColorService
+from presentation.admin.products.components import (
+    ColorActionsView,
+    ColorCreateModal,
+    ProductTabs,
 )
 from shared.components.breadcrumb.config import BreadcrumbsConfig
 from shared.components.common_page import CommonPage
@@ -15,9 +15,9 @@ from shared.components.table.dto import TableAccessor, TableData, TableRefreshEv
 from shared.lib.router import Router
 
 
-class MaterialListPage(CommonPage):
-    title: str = "Материалы"
-    topic_name: str = "material_list_page__refetch"
+class ColorListPage(CommonPage):
+    title: str = "Цвета"
+    topic_name: str = "color_list_page__refetch"
 
     def __init__(self, router: Router):
         self.__table_ref = Ref[Table]()
@@ -26,13 +26,12 @@ class MaterialListPage(CommonPage):
             title=self.title,
             router=router,
             content=[
-                MaterialTabs(router),
+                ProductTabs(router),
                 Table(
                     [
                         TableAccessor("Наименование", "name", expand=True),
-                        TableAccessor("Метрика", "metric__name", width=270),
                         TableAccessor(
-                            "Действия", "actions", width=90, view=MaterialActionsView
+                            "Действия", "actions", width=90, view=ColorActionsView
                         ),
                     ],
                     topic_name=self.topic_name,
@@ -42,7 +41,8 @@ class MaterialListPage(CommonPage):
             ],
             breadcrumbs=[
                 BreadcrumbsConfig("Главная"),
-                BreadcrumbsConfig("Материалы", "/materials"),
+                BreadcrumbsConfig("Товары", "/products"),
+                BreadcrumbsConfig("Цвета", "/products/colors"),
             ],
         )
 
@@ -60,7 +60,7 @@ class MaterialListPage(CommonPage):
         return await self.__fetch_data()
 
     async def __fetch_data(self, page: int = 0):
-        entity_service = MaterialService()
+        entity_service = ColorService()
         paginated_response = await entity_service.all(records=20, page=page)
         self.__table_ref.current.refresh(
             TableData(
@@ -73,4 +73,4 @@ class MaterialListPage(CommonPage):
         )
 
     def __open_create_form(self):
-        self.page.show_dialog(MaterialCreateModal())
+        self.page.show_dialog(ColorCreateModal())

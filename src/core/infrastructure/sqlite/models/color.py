@@ -5,7 +5,6 @@ from sqlalchemy import DateTime, String, func
 from sqlalchemy.orm import Mapped, mapped_column
 
 from core.domain.entities.color import Color
-from core.domain.value_objects.color import ColorId, ColorName
 from core.infrastructure.sqlite.database import Base
 
 
@@ -23,7 +22,7 @@ class ColorModel(Base):
     )
 
     def to_entity(self) -> Color:
-        return Color(id=ColorId(self.id), name=ColorName(self.name))
+        return Color(id=self.id, name=self.name)
 
     @staticmethod
     def from_entity(entity: Color) -> ColorModel:

@@ -9,12 +9,12 @@ class Color(Entity):
     def __init__(
         self,
         id: ColorId,
-        name: ColorName,
+        name: str,
         created_at: datetime = datetime.now(),
         updated_at: datetime = datetime.now(),
     ) -> None:
         self._id = id
-        self._name = name
+        self._name = ColorName(name)
         self._created_at = created_at
         self._updated_at = updated_at
 
@@ -40,12 +40,12 @@ class Color(Entity):
     def updated_at(self) -> datetime:
         return self._updated_at
 
-    def update_name(self, name: ColorName) -> None:
-        self._name = name
+    def update_name(self, name: str) -> None:
+        self._name = ColorName(name)
         self._updated_at = datetime.now()
 
     @staticmethod
-    def create(name: ColorName) -> Color:
+    def create(name: str) -> Color:
         return Color(
             id=ColorId.generate(),
             name=name,
