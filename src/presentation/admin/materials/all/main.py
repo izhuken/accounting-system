@@ -30,6 +30,7 @@ class MaterialListPage(CommonPage):
                 Table(
                     [
                         TableAccessor("Наименование", "name", expand=True),
+                        TableAccessor("Метрика", "metric__name", width=270),
                         TableAccessor(
                             "Действия", "actions", width=90, view=MaterialActionsView
                         ),

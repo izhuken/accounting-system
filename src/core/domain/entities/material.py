@@ -10,10 +10,13 @@ class Material(Entity):
         self,
         id: MaterialId,
         name: str,
-        metric: Metric | None = None,
+        metric: Metric,
         created_at: datetime = datetime.now(),
         updated_at: datetime = datetime.now(),
     ) -> None:
+        if not metric:
+            raise ValueError("Ошибка! Метрика обязательна")
+
         self._id = id
         self._name = MaterialName(name)
         self._metric = metric
@@ -51,6 +54,9 @@ class Material(Entity):
         self._updated_at = datetime.now()
 
     def update_metric(self, metric: Metric) -> None:
+        if not metric:
+            raise ValueError("Ошибка! Метрика обязательна")
+
         self._metric = metric
         self._updated_at = datetime.now()
 
@@ -58,14 +64,13 @@ class Material(Entity):
         return {
             "id": self.id.value,
             "name": self.name.value,
-            "metric": self.metric.to_dict() if self.metric else None,
+            "metric": self.metric.to_dict(),
             "created_at": self.created_at.isoformat(),
             "updated_at": self.updated_at.isoformat(),
         }
 
     @staticmethod
-    # FIXME: фиксанить, metric не может быть None
-    def create(name: str, metric: Metric | None = None) -> Material:
+    def create(name: str, metric: Metric) -> Material:
         return Material(
             id=MaterialId.generate(),
             name=name,

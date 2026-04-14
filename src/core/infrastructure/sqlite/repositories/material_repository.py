@@ -6,3 +6,4 @@ from core.infrastructure.sqlite.repositories.base_repository import BaseReposito
 
 class MaterialRepository(BaseRepository, IMaterialRepository):
     model: Base = MaterialModel
+    additional_fields = ["metric"]

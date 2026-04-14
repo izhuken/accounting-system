@@ -18,7 +18,7 @@ logger = logging.getLogger("alembic.env")
 target_metadata = Base.metadata
 
 section = config.config_ini_section
-config.set_section_option(section, "DATABASE_URL", Config.db_url)
+config.set_section_option(section, "DATABASE_URL", Config.sync_db_url)
 
 
 def run_migrations_offline():

@@ -18,6 +18,7 @@ from core.service.app.ientity_service import IEntityService
 from shared.colors import Colors
 from shared.components.common_button import CommonButton
 from shared.components.common_input import CommonInput
+from shared.components.custom_dropdown import CustomDropdown
 from shared.lib import SnackBarType, is_uuid, snack
 
 
@@ -86,6 +87,10 @@ class CommonCreateModal(AlertDialog):
         payload = {}
 
         for field_name, field_value in self.fields.items():
+            if isinstance(field_value, CustomDropdown):
+                payload[field_name] = field_value.payload
+                continue
+
             if is_uuid(str(field_value.value)):
                 payload[field_name] = UUID(field_value.value)
                 continue
