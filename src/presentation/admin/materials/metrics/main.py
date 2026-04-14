@@ -2,12 +2,9 @@ from typing import Any
 
 from flet import Ref
 
-from core.service.app import MaterialService
-from presentation.admin.materials.components import (
-    MaterialActionsView,
-    MaterialCreateModal,
-    MaterialTabs,
-)
+from core.service.app import MetricService
+from presentation.admin.materials.components import MetricActionsView, MetricCreateModal
+from presentation.admin.materials.components.tabs import MaterialTabs
 from shared.components.breadcrumb.config import BreadcrumbsConfig
 from shared.components.common_page import CommonPage
 from shared.components.table.core import Table
@@ -15,9 +12,9 @@ from shared.components.table.dto import TableAccessor, TableData, TableRefreshEv
 from shared.lib.router import Router
 
 
-class MaterialListPage(CommonPage):
-    title: str = "Материалы"
-    topic_name: str = "material_list_page__refetch"
+class MetricListPage(CommonPage):
+    title: str = "Метрики"
+    topic_name: str = "metric_list_page__refetch"
 
     def __init__(self, router: Router):
         self.__table_ref = Ref[Table]()
@@ -29,10 +26,10 @@ class MaterialListPage(CommonPage):
                 MaterialTabs(router),
                 Table(
                     [
+                        TableAccessor("Код", "code", width=90),
                         TableAccessor("Наименование", "name", expand=True),
-                        TableAccessor("Метрика", "metric__name", width=270),
                         TableAccessor(
-                            "Действия", "actions", width=90, view=MaterialActionsView
+                            "Действия", "actions", width=90, view=MetricActionsView
                         ),
                     ],
                     topic_name=self.topic_name,
@@ -61,7 +58,7 @@ class MaterialListPage(CommonPage):
         return await self.__fetch_data()
 
     async def __fetch_data(self, page: int = 0):
-        entity_service = MaterialService()
+        entity_service = MetricService()
         paginated_response = await entity_service.all(records=20, page=page)
         self.__table_ref.current.refresh(
             TableData(
@@ -74,4 +71,4 @@ class MaterialListPage(CommonPage):
         )
 
     def __open_create_form(self):
-        self.page.show_dialog(MaterialCreateModal())
+        self.page.show_dialog(MetricCreateModal())

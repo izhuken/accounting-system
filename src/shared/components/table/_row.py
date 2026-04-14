@@ -18,7 +18,6 @@ class TableRow(Container):
     ):
         self.__payload = payload
         self.__on_row_click = on_row_click
-
         super().__init__(
             Row(
                 [

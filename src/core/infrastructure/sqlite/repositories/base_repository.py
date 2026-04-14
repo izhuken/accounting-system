@@ -1,11 +1,14 @@
 from math import ceil
+from sqlite3 import IntegrityError as SQLiteIntegrityError
 
 from sqlalchemy import Select, delete, func, select
+from sqlalchemy.exc import IntegrityError as SAIntegrityError
 from sqlalchemy.exc import SQLAlchemyError
+from sqlalchemy.orm import selectinload
 
 from core.domain.dto import Paginated
 from core.domain.entities.entity import Entity
-from core.domain.repositories.exc import FetchException, SaveException
+from core.domain.repositories.exc import FetchException, RemoveException, SaveException
 from core.domain.repositories.interfaces import IBaseRepository
 from core.domain.value_objects.common.id_object import (
     UIntValueObjectId,
@@ -16,6 +19,7 @@ from core.infrastructure.sqlite.database import Base, SessionLocal
 
 class BaseRepository(IBaseRepository):
     model: Base
+    additional_fields: list[str] = []
 
     async def all(
         self,
@@ -31,7 +35,8 @@ class BaseRepository(IBaseRepository):
                 .offset(page * records)
                 .limit(records)
             )
-            statement = self.__ordering_statement(statement, order_by)
+            statement = self._ordering_statement(statement, order_by)
+            statement = self._select_additional_fields(statement)
 
             fetched_result = (await session.execute(statement)).scalars().unique().all()
             count_result = (await session.execute(count_statement)).scalar()
@@ -51,14 +56,15 @@ class BaseRepository(IBaseRepository):
             )
 
     async def one(self, _id: UUIDValueObjectId | UIntValueObjectId) -> Entity:
+        statement = (
+            select(self.model)
+            .select_from(self.model)
+            .filter(self.model.id == _id.value)
+        )
+        statement = self._select_additional_fields(statement)
+
         async with SessionLocal() as session:
-            response = (
-                await session.execute(
-                    select(self.model)
-                    .select_from(self.model)
-                    .filter(self.model.id == _id.value)
-                )
-            ).scalar_one_or_none()
+            response = (await session.execute(statement)).scalar_one_or_none()
 
             if not response:
                 raise FetchException
@@ -87,8 +93,12 @@ class BaseRepository(IBaseRepository):
 
         async with SessionLocal.begin() as session:
             try:
-                merged_model = await session.merge(entity_model)
+                merged_model: Base = await session.merge(entity_model)
                 await session.flush()
+                await session.refresh(
+                    merged_model,
+                    attribute_names=self.additional_fields,
+                )
                 return merged_model.to_entity()
             except SQLAlchemyError:
                 raise SaveException
@@ -96,15 +106,18 @@ class BaseRepository(IBaseRepository):
     async def remove(self, entity: Entity) -> Entity:
         entity_model = self.model.from_entity(entity)
 
-        async with SessionLocal() as session:
-            await session.execute(
-                delete(self.model).where(self.model.id == entity_model.id)
-            )
-            await session.commit()
+        async with SessionLocal.begin() as session:
+            try:
+                await session.execute(
+                    delete(self.model).where(self.model.id == entity_model.id)
+                )
+                await session.commit()
+            except SAIntegrityError, SQLiteIntegrityError:
+                raise RemoveException
 
         return entity
 
-    def __ordering_statement(
+    def _ordering_statement(
         self, statement: Select, order_column: str | None = None
     ) -> Select:
         reverse = False
@@ -121,3 +134,9 @@ class BaseRepository(IBaseRepository):
 
         attribute = getattr(self.model, order_column)
         return statement.order_by(attribute.desc() if reverse else attribute.asc())
+
+    def _select_additional_fields(self, statement: Select) -> Select:
+        for _field in self.additional_fields:
+            statement = statement.options(selectinload(getattr(self.model, _field)))
+
+        return statement

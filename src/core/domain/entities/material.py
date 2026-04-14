@@ -1,7 +1,7 @@
 from datetime import datetime
 
 from core.domain.entities.entity import Entity
-from core.domain.entities.metric_code import Metric
+from core.domain.entities.metric import Metric
 from core.domain.value_objects.material import MaterialId, MaterialName
 
 
@@ -9,13 +9,16 @@ class Material(Entity):
     def __init__(
         self,
         id: MaterialId,
-        name: MaterialName,
-        metric: Metric = None,
+        name: str,
+        metric: Metric,
         created_at: datetime = datetime.now(),
         updated_at: datetime = datetime.now(),
     ) -> None:
+        if not metric:
+            raise ValueError("Ошибка! Метрика обязательна")
+
         self._id = id
-        self._name = name
+        self._name = MaterialName(name)
         self._metric = metric
         self._created_at = created_at
         self._updated_at = updated_at
@@ -46,16 +49,28 @@ class Material(Entity):
     def updated_at(self) -> datetime:
         return self._updated_at
 
-    def update_name(self, name: MaterialName) -> None:
-        self._name = name
+    def update_name(self, name: str) -> None:
+        self._name = MaterialName(name)
         self._updated_at = datetime.now()
 
     def update_metric(self, metric: Metric) -> None:
+        if not metric:
+            raise ValueError("Ошибка! Метрика обязательна")
+
         self._metric = metric
         self._updated_at = datetime.now()
 
+    def to_dict(self) -> dict:
+        return {
+            "id": self.id.value,
+            "name": self.name.value,
+            "metric": self.metric.to_dict(),
+            "created_at": self.created_at.isoformat(),
+            "updated_at": self.updated_at.isoformat(),
+        }
+
     @staticmethod
-    def create(name: MaterialName, metric: Metric) -> Material:
+    def create(name: str, metric: Metric) -> Material:
         return Material(
             id=MaterialId.generate(),
             name=name,

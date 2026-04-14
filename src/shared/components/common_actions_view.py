@@ -1,10 +1,11 @@
 from flet import AlertDialog, CrossAxisAlignment, MainAxisAlignment, Row
 
+from core.domain.repositories.exc.remove import RemoveException
 from core.service.app.ientity_service import IEntityService
 from core.service.command.base_commands import BaseRemoveCommand
 from shared.colors import Colors
 from shared.components.actions_button import ActionsButton
-from shared.lib import snack
+from shared.lib import SnackBarType, snack
 
 
 class CommonActionsColumn(Row):
@@ -45,6 +46,10 @@ class CommonActionsColumn(Row):
 
     async def delete_item(self, *args, **kwargs):
         command = self.remove_command()
-        await command.execute(self.payload.get("id"))
+        try:
+            await command.execute(self.payload.get("id"))
+        except RemoveException as e:
+            return snack(self.page, e.message, SnackBarType.ERROR)
+
         snack(self.page, "Запись успешно удалена!")
         self.page.pubsub.send_all_on_topic(self.topic_name, "refresh")
