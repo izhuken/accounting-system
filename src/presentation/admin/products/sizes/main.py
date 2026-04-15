@@ -2,12 +2,9 @@ from typing import Any
 
 from flet import Ref
 
-from core.service.app import ProductService
-from presentation.admin.products.components import (
-    ProductActionsView,
-    ProductCreateModal,
-    ProductTabs,
-)
+from core.service.app import SizeService
+from presentation.admin.products.components import SizeActionsView, SizeCreateModal
+from presentation.admin.products.components.tabs import ProductTabs
 from shared.components.breadcrumb.config import BreadcrumbsConfig
 from shared.components.common_page import CommonPage
 from shared.components.table.core import Table
@@ -15,9 +12,9 @@ from shared.components.table.dto import TableAccessor, TableData, TableRefreshEv
 from shared.lib.router import Router
 
 
-class ProductListPage(CommonPage):
-    title: str = "Товары"
-    topic_name: str = "product_list_page__refetch"
+class SizeListPage(CommonPage):
+    title: str = "Размеры"
+    topic_name: str = "size_list_page__refetch"
 
     def __init__(self, router: Router):
         self.__table_ref = Ref[Table]()
@@ -29,11 +26,10 @@ class ProductListPage(CommonPage):
                 ProductTabs(router),
                 Table(
                     [
-                        TableAccessor("Наименование", "name", expand=True),
-                        TableAccessor("Цвет", "color__name", width=270),
-                        TableAccessor("Размер", "size__code", width=270),
+                        TableAccessor("Размер", "code", width=90),
+                        TableAccessor("Рост", "height", expand=True),
                         TableAccessor(
-                            "Действия", "actions", width=90, view=ProductActionsView
+                            "Действия", "actions", width=90, view=SizeActionsView
                         ),
                     ],
                     topic_name=self.topic_name,
@@ -44,6 +40,7 @@ class ProductListPage(CommonPage):
             breadcrumbs=[
                 BreadcrumbsConfig("Главная"),
                 BreadcrumbsConfig("Товары", "/products"),
+                BreadcrumbsConfig("Размеры", "/products/sizes"),
             ],
         )
 
@@ -61,7 +58,7 @@ class ProductListPage(CommonPage):
         return await self.__fetch_data()
 
     async def __fetch_data(self, page: int = 0):
-        entity_service = ProductService()
+        entity_service = SizeService()
         paginated_response = await entity_service.all(records=20, page=page)
         self.__table_ref.current.refresh(
             TableData(
@@ -74,4 +71,4 @@ class ProductListPage(CommonPage):
         )
 
     def __open_create_form(self):
-        self.page.show_dialog(ProductCreateModal())
+        self.page.show_dialog(SizeCreateModal())

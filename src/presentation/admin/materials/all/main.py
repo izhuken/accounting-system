@@ -43,7 +43,6 @@ class MaterialListPage(CommonPage):
             breadcrumbs=[
                 BreadcrumbsConfig("Главная"),
                 BreadcrumbsConfig("Материалы", "/materials"),
-                BreadcrumbsConfig("Метрики", "/materials/metrics"),
             ],
         )
 

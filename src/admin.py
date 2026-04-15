@@ -4,6 +4,7 @@ from flet import Page, run
 
 from presentation.admin import (
     ClientListPage,
+    ColorListPage,
     ContactorListPage,
     InitPage,
     InvoiceListPage,
@@ -12,6 +13,7 @@ from presentation.admin import (
     MetricListPage,
     OrderListPage,
     ProductListPage,
+    SizeListPage,
     UserListPage,
     WarehouseListPage,
 )
@@ -41,6 +43,8 @@ async def main(page: Page):
             "/invoices": InvoiceListPage,
             # products section
             "/products": ProductListPage,
+            "/products/colors": ColorListPage,
+            "/products/sizes": SizeListPage,
             # materials section
             "/materials": MaterialListPage,
             "/materials/metrics": MetricListPage,

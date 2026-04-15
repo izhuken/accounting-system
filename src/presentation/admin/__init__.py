@@ -7,5 +7,7 @@ from .materials.all.main import MaterialListPage  # noqa: F401
 from .materials.metrics.main import MetricListPage  # noqa: F401
 from .orders.all.main import OrderListPage  # noqa: F401
 from .products.all.main import ProductListPage  # noqa: F401
+from .products.colors.main import ColorListPage  # noqa: F401
+from .products.sizes.main import SizeListPage  # noqa: F401
 from .users.all.main import UserListPage  # noqa: F401
 from .warehouses.all.main import WarehouseListPage  # noqa: F401

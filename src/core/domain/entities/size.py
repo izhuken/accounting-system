@@ -7,13 +7,13 @@ from core.domain.value_objects.size import SizeCode, SizeHeight
 class Size(Entity):
     def __init__(
         self,
-        code: SizeCode,
-        height: SizeHeight,
+        code: int,
+        height: str,
         created_at: datetime = datetime.now(),
         updated_at: datetime = datetime.now(),
     ) -> None:
-        self._code = code
-        self._height = height
+        self._code = SizeCode(code)
+        self._height = SizeHeight(height)
         self._created_at = created_at
         self._updated_at = updated_at
 
@@ -38,12 +38,20 @@ class Size(Entity):
     def updated_at(self) -> datetime:
         return self._updated_at
 
-    def update_height(self, height: SizeHeight) -> None:
-        self._height = height
+    def update_height(self, height: str) -> None:
+        self._height = SizeHeight(height)
         self._updated_at = datetime.now()
 
+    def to_dict(self) -> dict:
+        return {
+            "code": self.code.value,
+            "height": self.height.value,
+            "created_at": self.created_at.isoformat(),
+            "updated_at": self.updated_at.isoformat(),
+        }
+
     @staticmethod
-    def create(code: SizeCode, height: SizeHeight) -> Size:
+    def create(code: int, height: str) -> Size:
         return Size(
             code=code,
             height=height,
