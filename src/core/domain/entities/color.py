@@ -44,6 +44,14 @@ class Color(Entity):
         self._name = ColorName(name)
         self._updated_at = datetime.now()
 
+    def to_dict(self):
+        return {
+            "id": self.id.value,
+            "name": self.name.value,
+            "created_at": self.created_at.isoformat(),
+            "updated_at": self.updated_at.isoformat(),
+        }
+
     @staticmethod
     def create(name: str) -> Color:
         return Color(

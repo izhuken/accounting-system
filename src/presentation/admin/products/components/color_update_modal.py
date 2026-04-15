@@ -6,7 +6,7 @@ from shared.components.form import CommonUpdateModal
 
 class ColorUpdateModal(CommonUpdateModal):
     modal_title: str = "Редактирование размера"
-    topic_name: str = "Color_list_page__refetch"
+    topic_name: str = "color_list_page__refetch"
     entity = Color
     entity_service = ColorService
 

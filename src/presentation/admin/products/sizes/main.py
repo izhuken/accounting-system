@@ -26,7 +26,7 @@ class SizeListPage(CommonPage):
                 ProductTabs(router),
                 Table(
                     [
-                        TableAccessor("Код", "code", width=90),
+                        TableAccessor("Размер", "code", width=90),
                         TableAccessor("Рост", "height", expand=True),
                         TableAccessor(
                             "Действия", "actions", width=90, view=SizeActionsView

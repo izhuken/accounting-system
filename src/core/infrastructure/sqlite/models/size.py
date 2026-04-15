@@ -24,7 +24,7 @@ class SizeModel(Base):
 
     def to_entity(self) -> Size:
         return Size(
-            id=self.code,
+            code=self.code,
             height=self.height,
             created_at=self.created_at,
             updated_at=self.updated_at,
@@ -33,7 +33,7 @@ class SizeModel(Base):
     @staticmethod
     def from_entity(entity: Size) -> SizeModel:
         return SizeModel(
-            code=entity.id.value,
+            code=entity.code.value,
             height=entity.height.value,
             created_at=entity.created_at,
             updated_at=entity.updated_at,

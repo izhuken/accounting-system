@@ -2,7 +2,7 @@ from core.domain.entities import Size
 from core.service.app import SizeService
 from shared.components.common_input import CommonInput
 from shared.components.form import CommonCreateModal
-from shared.components.numeric_input import NumericInput
+from shared.components.numeric_input import NumericInput, NumericInputType
 
 
 class SizeCreateModal(CommonCreateModal):
@@ -14,7 +14,7 @@ class SizeCreateModal(CommonCreateModal):
     def __init__(self):
         super().__init__(
             {
-                "code": NumericInput(label="Размер"),
+                "code": NumericInput(label="Размер", type=NumericInputType.INT),
                 "height": CommonInput(label="Рост"),
             }
         )

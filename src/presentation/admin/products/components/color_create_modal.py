@@ -1,7 +1,7 @@
 from core.domain.entities import Color
 from core.service.app import ColorService
+from shared.components.common_input import CommonInput
 from shared.components.form import CommonCreateModal
-from shared.components.numeric_input import NumericInput
 
 
 class ColorCreateModal(CommonCreateModal):
@@ -13,7 +13,7 @@ class ColorCreateModal(CommonCreateModal):
     def __init__(self):
         super().__init__(
             {
-                "name": NumericInput(label="Наименование"),
+                "name": CommonInput(label="Наименование"),
             }
         )
 
