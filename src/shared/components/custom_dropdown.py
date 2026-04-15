@@ -64,7 +64,10 @@ class CustomDropdown(Dropdown):
         )
         return selected_option.data if selected_option else None
 
-    def set_value(self, value: str):
+    def set_value(self, value: dict | None):
+        if not value:
+            return
+
         self.value = str(value.get(self._option_key_selector))
 
     def clean_field(self):

@@ -10,14 +10,14 @@ class Product(Entity):
     def __init__(
         self,
         id: ProductId,
-        name: ProductName,
-        size: Size,
-        color: Color,
+        name: str,
+        size: Size | None = None,
+        color: Color | None = None,
         created_at: datetime = datetime.now(),
         updated_at: datetime = datetime.now(),
     ) -> None:
         self._id = id
-        self._name = name
+        self._name = ProductName(name)
         self._size = size
         self._color = color
         self._created_at = created_at
@@ -38,11 +38,11 @@ class Product(Entity):
         return self._name
 
     @property
-    def size(self) -> Size:
+    def size(self) -> Size | None:
         return self._size
 
     @property
-    def color(self) -> Color:
+    def color(self) -> Color | None:
         return self._color
 
     @property
@@ -53,18 +53,30 @@ class Product(Entity):
     def updated_at(self) -> datetime:
         return self._updated_at
 
-    def update_name(self, name: ProductName) -> None:
-        self._name = name
+    def update_name(self, name: str) -> None:
+        self._name = ProductName(name)
         self._updated_at = datetime.now()
 
-    def update_size(self, size: Size) -> None:
+    def update_size(self, size: Size | None = None) -> None:
         self._size = size
         self._updated_at = datetime.now()
 
-    def update_color(self, color: Color) -> None:
+    def update_color(self, color: Color | None = None) -> None:
         self._color = color
         self._updated_at = datetime.now()
 
+    def to_dict(self) -> dict:
+        return {
+            "id": self.id.value,
+            "name": self.name.value,
+            "size": self.size.to_dict() if self.size else None,
+            "color": self.color.to_dict() if self.color else None,
+            "created_at": self.created_at.isoformat(),
+            "updated_at": self.updated_at.isoformat(),
+        }
+
     @staticmethod
-    def create(name: ProductName, size: Size, color: Color) -> Product:
+    def create(
+        name: str, size: Size | None = None, color: Color | None = None
+    ) -> Product:
         return Product(id=ProductId.generate(), name=name, size=size, color=color)

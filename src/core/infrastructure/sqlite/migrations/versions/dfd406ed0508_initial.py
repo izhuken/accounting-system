@@ -251,7 +251,7 @@ def upgrade() -> None:
         "products",
         sa.Column("id", sa.Uuid(), nullable=False),
         sa.Column("name", EncryptedString(), nullable=False),
-        sa.Column("size_id", sa.String(length=32), nullable=False),
+        sa.Column("size_id", sa.String(length=32), nullable=True),
         sa.Column("color_id", sa.Uuid(), nullable=True),
         sa.Column(
             "created_at",
@@ -265,14 +265,8 @@ def upgrade() -> None:
             server_default=sa.text("(CURRENT_TIMESTAMP)"),
             nullable=False,
         ),
-        sa.ForeignKeyConstraint(
-            ["color_id"],
-            ["colors.id"],
-        ),
-        sa.ForeignKeyConstraint(
-            ["size_id"],
-            ["sizes.code"],
-        ),
+        sa.ForeignKeyConstraint(["color_id"], ["colors.id"], ondelete="RESTRICT"),
+        sa.ForeignKeyConstraint(["size_id"], ["sizes.code"], ondelete="RESTRICT"),
         sa.PrimaryKeyConstraint("id"),
         sa.UniqueConstraint("id"),
         sa.UniqueConstraint("name"),
